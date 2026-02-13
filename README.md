@@ -1,6 +1,6 @@
 # 🚀 AI Resume Analyzer & Skill Gap Finder
 
-A modern, AI-powered web application that analyzes resumes, extracts relevant skills, identifies skill gaps for a selected career role, and provides actionable career recommendations — all through a clean, intuitive interface.
+A modern, AI-powered web application that analyzes resumes, extracts relevant skills, identifies skill gaps for a selected career role, and provides actionable career recommendations — all through a **stunning, premium interface** with glassmorphism and smooth animations.
 
 Built with **Python (FastAPI)** on the backend and a **TailwindCSS-based frontend**, this project focuses on **real-world resume analysis logic**, not hype-driven AI buzzwords.
 
@@ -16,6 +16,11 @@ Built with **Python (FastAPI)** on the backend and a **TailwindCSS-based fronten
 - 📚 **Learning Resources for Missing Skills**
 - 🌗 **Dark / Light Mode Toggle**
 - ⚡ **Modern, Responsive UI**
+- 🎨 **Glassmorphism Cards** with frosted-glass blur
+- ✨ **Animated Gradient Background** with floating orbs
+- 🎬 **Staggered Entrance Animations** on page load
+- 🔢 **Animated Stat Counters** in results dashboard
+- 💫 **Micro-Interactions** — hover lifts, glow effects, shimmer buttons
 - 🔒 **Privacy-Friendly (No data stored)**
 
 ---
@@ -49,14 +54,31 @@ Built with **Python (FastAPI)** on the backend and a **TailwindCSS-based fronten
 
 ### 🎨 Frontend
 - **HTML5**
-- **Tailwind CSS**
+- **Tailwind CSS (CDN)**
 - **Vanilla JavaScript**
 - **Lucide Icons**
-- Dark / Light theme support
+- **Custom CSS Animations** (gradient mesh, floating orbs, staggered reveals)
+- **Glassmorphism Design System** (`backdrop-filter: blur`)
+- Dark / Light theme with `localStorage` persistence
 
 ---
 
+## 🎨 UI Design Highlights
 
+| Feature | Description |
+|---|---|
+| **Animated Mesh Background** | Slow-shifting gradient with 3 floating colored orbs for depth |
+| **Glassmorphism Cards** | Semi-transparent cards with `backdrop-filter: blur(20px)` and border glow on hover |
+| **Staggered Animations** | Elements fade in sequentially with `slideUp` and delay classes |
+| **Gradient Text** | Accent words use a vibrant `indigo → purple → pink` gradient |
+| **Shimmer Button** | Diagonal light sweep on hover + elevated glow shadow |
+| **Logo Pulse** | Breathing glow ring on the logo icon |
+| **Animated Counters** | Stat numbers count up from 0 to final value over 1.2s |
+| **Progress Steps** | Loading screen shows Uploading → Parsing → Analyzing stages |
+| **Social Icon Hover** | Expanding circle background on social link hover |
+| **Premium Dark Mode** | Deep-space gradients, dimmed orbs, matching glass effects |
+
+---
 
 ## ▶️ Running the Project Locally
 
@@ -98,52 +120,42 @@ role → target role (frontend, backend, fullstack, data_science, devops)
 include_resources → true / false
 ```
 
-Response
----
-```
+**Response:**
+
+```json
 {
-  "match_percentage": 72,<p>
-  "rating": "Good ⭐⭐⭐",<p>
-  "matched_skills": [...],<p>
-  "missing_skills": [...],<p>
-  "recommendations": [...],<p>
-  "learning_resources": {...}<p>
+  "match_percentage": 72,
+  "rating": "Good ⭐⭐⭐",
+  "matched_skills": ["Python", "Django", ...],
+  "missing_skills": ["Docker", "Kubernetes", ...],
+  "recommendations": ["Learn containerization with Docker", ...],
+  "learning_resources": { "Docker": "https://...", ... }
 }
 ```
 
 ### 🎯 Supported Roles
---- 
 
-Frontend Developer
-
-Backend Developer
-
-Full Stack Developer
-
-Data Scientist
-
-DevOps Engineer
+- Frontend Developer
+- Backend Developer
+- Full Stack Developer
+- Data Scientist
+- DevOps Engineer
 
 
 ### 🔮 Future Improvements
----
 
-📊 Skill radar charts
-
-📄 Resume preview panel
-
-🔐 User authentication
+- 📊 Skill radar charts
+- 📄 Resume preview panel
+- 🔐 User authentication
+- 📱 Mobile-optimized layout
 
 
 
 ### 👨‍💻 Author
----
 
-Jyotirmoy Laha
+**Jyotirmoy Laha**
 BCA Student | Aspiring Software Engineer
----
 
-🌐 AI Resume Analyzer: https://ai-resume-analyzer-hhhb.onrender.com
+🌐 **Live Demo:** [AI Resume Analyzer](https://ai-resume-analyzer-hhhb.onrender.com)
 
-💼 GitHub: https://github.com/JyotirmoyLaha
-
+💼 **GitHub:** [JyotirmoyLaha](https://github.com/JyotirmoyLaha)

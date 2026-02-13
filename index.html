@@ -1,73 +1,627 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillGap AI - Resume Analyzer</title>
+    <title>SkillGap AI — Resume Analyzer & Skill Gap Finder</title>
+    <meta name="description"
+        content="Upload your resume, select a target role, and get AI-driven skill gap analysis with actionable career recommendations.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        // Configure Tailwind for class-based dark mode
-        tailwind.config = {
-            darkMode: 'class'
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .animate-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Smooth transition for theme switching */
-        .theme-transition, .theme-transition * {
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        /* ===== BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ===== ANIMATED MESH GRADIENT BACKGROUND ===== */
+        .bg-mesh {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 25%, #f5f0ff 50%, #eef6ff 75%, #f0f4ff 100%);
+            background-size: 400% 400%;
+            animation: meshShift 20s ease infinite;
+        }
+
+        .dark .bg-mesh {
+            background: linear-gradient(135deg, #0a0e1a 0%, #0f1629 25%, #130f24 50%, #0d1520 75%, #0a0e1a 100%);
+            background-size: 400% 400%;
+        }
+
+        @keyframes meshShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            25% {
+                background-position: 100% 0%;
+            }
+
+            50% {
+                background-position: 100% 100%;
+            }
+
+            75% {
+                background-position: 0% 100%;
+            }
+        }
+
+        /* ===== FLOATING ORBS ===== */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: #818cf8;
+            top: -120px;
+            left: -100px;
+            animation: orbFloat1 18s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #c084fc;
+            bottom: -80px;
+            right: -60px;
+            animation: orbFloat2 22s ease-in-out infinite;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #38bdf8;
+            top: 50%;
+            left: 60%;
+            animation: orbFloat3 15s ease-in-out infinite;
+        }
+
+        .dark .orb {
+            opacity: 0.12;
+        }
+
+        @keyframes orbFloat1 {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(60px, 40px) scale(1.1);
+            }
+        }
+
+        @keyframes orbFloat2 {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(-50px, -30px) scale(1.15);
+            }
+        }
+
+        @keyframes orbFloat3 {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(30px, -50px) scale(0.9);
+            }
+        }
+
+        /* ===== GLASSMORPHISM ===== */
+        .glass {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px) saturate(1.6);
+            -webkit-backdrop-filter: blur(16px) saturate(1.6);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.35s cubic-bezier(.22, .61, .36, 1), box-shadow 0.35s ease;
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(100, 116, 139, 0.18);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.15);
+        }
+
+        .dark .glass-card:hover {
+            box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.25);
+        }
+
+        /* ===== STAGGERED ENTRANCE ===== */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(24px);
+            animation: slideUp 0.7s cubic-bezier(.22, .61, .36, 1) forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-5 {
+            animation-delay: 0.5s;
+        }
+
+        .delay-6 {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== GRADIENT TEXT ===== */
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== NAV GLOW ===== */
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px) saturate(2);
+            -webkit-backdrop-filter: blur(24px) saturate(2);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .dark .nav-glass {
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+        }
+
+        /* ===== LOGO PULSE ===== */
+        .logo-icon {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+            }
+        }
+
+        /* ===== UPLOAD ZONE ANIMATED BORDER ===== */
+        .upload-zone {
+            position: relative;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px dashed transparent;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+                linear-gradient(135deg, #cbd5e1, #e2e8f0, #cbd5e1);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            transition: all 0.4s ease;
+        }
+
+        .dark .upload-zone {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)),
+                linear-gradient(135deg, #334155, #1e293b, #334155);
+        }
+
+        .upload-zone:hover,
+        .upload-zone.file-selected {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+                linear-gradient(135deg, #6366f1, #a855f7, #6366f1);
+            box-shadow: 0 0 30px -8px rgba(99, 102, 241, 0.2);
+        }
+
+        .dark .upload-zone:hover,
+        .dark .upload-zone.file-selected {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)),
+                linear-gradient(135deg, #6366f1, #a855f7, #6366f1);
+            box-shadow: 0 0 30px -8px rgba(99, 102, 241, 0.3);
+        }
+
+        .upload-zone .icon-wrap {
+            transition: transform 0.4s cubic-bezier(.22, .61, .36, 1), box-shadow 0.4s ease;
+        }
+
+        .upload-zone:hover .icon-wrap {
+            transform: scale(1.12);
+            box-shadow: 0 8px 24px -6px rgba(99, 102, 241, 0.3);
+        }
+
+        /* ===== BUTTON GLOW ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            box-shadow: 0 8px 24px -6px rgba(99, 102, 241, 0.4);
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.15) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 12px 32px -6px rgba(99, 102, 241, 0.55);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: #cbd5e1;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .dark .btn-primary:disabled {
+            background: #334155;
+        }
+
+        .btn-primary:disabled::before {
+            display: none;
+        }
+
+        /* ===== STAT CARD GRADIENT ICONS ===== */
+        .stat-icon-indigo {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+        }
+
+        .dark .stat-icon-indigo {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(129, 140, 248, 0.15));
+        }
+
+        .stat-icon-emerald {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+
+        .dark .stat-icon-emerald {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.15));
+        }
+
+        .stat-icon-rose {
+            background: linear-gradient(135deg, #ffe4e6, #fecdd3);
+        }
+
+        .dark .stat-icon-rose {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.2), rgba(251, 113, 133, 0.15));
+        }
+
+        /* ===== SKILL TAG ===== */
+        .skill-tag {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ===== NEXT STEPS CARD GRADIENT ===== */
+        .next-steps-card {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed, #6d28d9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-steps-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+        }
+
+        /* ===== RESOURCE LINK ===== */
+        .resource-link {
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            transform: translateX(4px);
+            border-color: #818cf8 !important;
+        }
+
+        .resource-link:hover .arrow-icon {
+            transform: translateX(4px);
+        }
+
+        .arrow-icon {
+            transition: transform 0.3s ease;
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .spinner-ring {
+            border: 4px solid rgba(99, 102, 241, 0.15);
+            border-top-color: #6366f1;
+            animation: spinSmooth 1s cubic-bezier(.4, .0, .2, 1) infinite;
+        }
+
+        @keyframes spinSmooth {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4) infinite;
+        }
+
+        @keyframes dots {
+            0% {
+                content: '';
+            }
+
+            25% {
+                content: '.';
+            }
+
+            50% {
+                content: '..';
+            }
+
+            75% {
+                content: '...';
+            }
+        }
+
+        /* ===== PROGRESS STEPS ===== */
+        .progress-step {
+            opacity: 0.4;
+            transition: opacity 0.5s ease, color 0.5s ease;
+        }
+
+        .progress-step.active {
+            opacity: 1;
+        }
+
+        /* ===== FOOTER GRADIENT LINE ===== */
+        .footer-gradient {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #6366f1, #a855f7, #6366f1, transparent);
+        }
+
+        /* ===== SOCIAL ICON HOVER ===== */
+        .social-icon {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.1);
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        .social-icon:hover::before {
+            transform: scale(1);
+        }
+
+        .social-icon:hover {
+            color: #6366f1;
+        }
+
+        .dark .social-icon:hover {
+            color: #818cf8;
+        }
+
+        /* ===== SECONDARY BUTTON ===== */
+        .btn-secondary {
+            position: relative;
+            border: 2px solid rgba(148, 163, 184, 0.3);
+            transition: all 0.35s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px -8px rgba(99, 102, 241, 0.2);
+        }
+
+        .dark .btn-secondary:hover {
+            border-color: #818cf8;
+            color: #818cf8;
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        /* ===== SCROLL SMOOTH ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== THEME TRANSITION ===== */
+        .theme-transition,
+        .theme-transition * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== SELECT STYLING ===== */
+        .select-premium {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .dark .select-premium {
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .select-premium:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        /* ===== RATING BADGE GRADIENT ===== */
+        .badge-gradient {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .dark .badge-gradient {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.3);
         }
     </style>
 </head>
-<body class="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 theme-transition selection:bg-indigo-100 selection:text-indigo-900">
+
+<body
+    class="min-h-screen text-slate-900 dark:text-slate-100 theme-transition selection:bg-indigo-200/60 selection:text-indigo-900">
+
+    <!-- Animated Background -->
+    <div class="bg-mesh"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
 
     <!-- Navigation -->
-    <nav class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 transition-colors duration-200">
+    <nav class="nav-glass sticky top-0 z-50">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <div class="bg-indigo-600 p-1.5 rounded-lg text-white">
+            <div class="flex items-center space-x-3">
+                <div
+                    class="logo-icon p-2 rounded-xl text-white shadow-lg shadow-indigo-200/40 dark:shadow-indigo-900/30">
                     <i data-lucide="trending-up" size="20"></i>
                 </div>
-                <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">AI Resume Analyzer</span>
+                <span class="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
+                    AI Resume <span class="gradient-text">Analyzer</span>
+                </span>
             </div>
-            <div class="flex items-center space-x-4">
-                <button id="theme-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors focus:outline-none">
+            <div class="flex items-center space-x-3">
+                <button id="theme-toggle"
+                    class="p-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all focus:outline-none">
                     <i data-lucide="moon" class="dark:hidden"></i>
                     <i data-lucide="sun" class="hidden dark:block"></i>
                 </button>
-                <button onclick="window.location.reload()" class="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors focus:outline-none">
+                <button onclick="window.location.reload()"
+                    class="p-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all focus:outline-none">
                     <i data-lucide="refresh-cw" size="18"></i>
                 </button>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-4 py-12">
-        
-        <!-- Header Section (Hero) -->
-        <div id="hero-section" class="text-center mb-12 space-y-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                Optimize Your Resume for <span class="text-indigo-600 dark:text-indigo-400">Any Role</span>
+    <main class="max-w-5xl mx-auto px-4 py-16">
+
+        <!-- Hero Section -->
+        <div id="hero-section" class="text-center mb-14 space-y-5">
+            <div class="animate-in">
+                <span
+                    class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-indigo-100/70 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-800/50 mb-4">
+                    <i data-lucide="sparkles" class="mr-1.5 w-3.5 h-3.5"></i>
+                    AI-Powered Career Intelligence
+                </span>
+            </div>
+            <h1
+                class="animate-in delay-1 text-4xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+                Optimize Your Resume for<br>
+                <span class="gradient-text">Any Role</span>
             </h1>
-            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                Upload your resume and select your target role to identify skill gaps, 
-                get career feedback, and receive actionable recommendations.
+            <p
+                class="animate-in delay-2 text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Upload your resume and select your target role to identify skill gaps,
+                get expert career feedback, and receive actionable recommendations.
             </p>
         </div>
 
         <!-- Input Section -->
-        <div id="input-section" class="max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 overflow-hidden">
-            <div class="p-8 space-y-8">
+        <div id="input-section" class="max-w-2xl mx-auto glass-card rounded-3xl overflow-hidden animate-in delay-3">
+            <div class="p-8 md:p-10 space-y-8">
                 <!-- Role Selection -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Target Career Role</label>
+                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2.5 tracking-wide">
+                        <i data-lucide="briefcase" class="inline-block w-4 h-4 mr-1 -mt-0.5"></i>
+                        Target Career Role
+                    </label>
                     <div class="relative">
-                        <select id="role-select" class="w-full pl-4 pr-10 py-3.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 appearance-none transition-all outline-none cursor-pointer">
+                        <select id="role-select"
+                            class="select-premium w-full pl-4 pr-12 py-4 border border-slate-200/60 dark:border-slate-700/60 text-slate-900 dark:text-slate-100 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 appearance-none outline-none cursor-pointer text-sm font-medium">
                             <option value="" disabled selected>Select a role</option>
                             <option value="backend">Backend Developer</option>
                             <option value="frontend">Frontend Developer</option>
@@ -75,82 +629,114 @@
                             <option value="data_science">Data Scientist</option>
                             <option value="devops">DevOps Engineer</option>
                         </select>
-                        <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size="18"></i>
+                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5"></i>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Upload Area -->
-                <div id="drop-zone" class="relative group border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-10 text-center transition-all cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-900/30">
+                <div id="drop-zone" class="upload-zone group rounded-2xl p-10 md:p-12 text-center cursor-pointer">
                     <input type="file" id="resume-upload" class="hidden" accept=".pdf" />
                     <div class="flex flex-col items-center">
-                        <div id="upload-icon-container" class="p-4 rounded-full mb-4 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 transition-transform group-hover:scale-110">
-                            <i data-lucide="upload" id="main-icon" size="32"></i>
+                        <div id="upload-icon-container"
+                            class="icon-wrap p-5 rounded-2xl mb-5 bg-slate-100/80 dark:bg-slate-700/50 text-slate-400 dark:text-slate-500">
+                            <i data-lucide="upload" id="main-icon" size="36"></i>
                         </div>
-                        <h3 id="file-name-display" class="text-lg font-bold text-slate-900 dark:text-white">Choose a PDF resume</h3>
-                        <p id="file-size-display" class="text-slate-500 dark:text-slate-400 text-sm mt-1">Drag and drop or click to browse</p>
+                        <h3 id="file-name-display" class="text-lg font-bold text-slate-900 dark:text-white">Choose a PDF
+                            resume</h3>
+                        <p id="file-size-display" class="text-slate-400 dark:text-slate-500 text-sm mt-1.5">Drag and
+                            drop or click to browse</p>
                     </div>
                 </div>
 
                 <!-- Error Message -->
-                <div id="error-message" class="hidden flex items-center space-x-2 text-rose-600 bg-rose-50 dark:bg-rose-900/20 p-4 rounded-xl text-sm border border-rose-100 dark:border-rose-900/50">
+                <div id="error-message"
+                    class="hidden flex items-center space-x-3 text-rose-600 bg-rose-50/80 dark:bg-rose-900/20 p-4 rounded-2xl text-sm border border-rose-200/50 dark:border-rose-900/40 backdrop-blur-sm">
                     <i data-lucide="alert-circle" size="18"></i>
                     <span id="error-text"></span>
                 </div>
 
                 <!-- Submit Button -->
-                <button id="analyze-btn" disabled class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 dark:shadow-none transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:cursor-not-allowed">
+                <button id="analyze-btn" disabled
+                    class="btn-primary w-full py-4 text-white font-bold rounded-2xl flex items-center justify-center space-x-2.5 cursor-pointer disabled:cursor-not-allowed text-base">
                     <span>Analyze Resume</span>
                     <i data-lucide="arrow-right" size="20"></i>
                 </button>
             </div>
-            <div class="bg-slate-50 dark:bg-slate-900/20 px-8 py-4 border-t border-slate-100 dark:border-slate-700">
-                <p class="text-xs text-center text-slate-400 dark:text-slate-500 uppercase tracking-widest font-semibold">
+            <div
+                class="bg-slate-50/50 dark:bg-slate-900/30 px-8 py-4 border-t border-slate-100/50 dark:border-slate-700/30 backdrop-blur-sm">
+                <p
+                    class="text-[10px] text-center text-slate-400 dark:text-slate-600 uppercase tracking-[0.25em] font-bold">
                     Privacy Guaranteed • AI Driven • PDF Only
                 </p>
             </div>
         </div>
 
         <!-- Loading State -->
-        <div id="loader" class="hidden flex flex-col items-center justify-center py-20 space-y-4">
+        <div id="loader" class="hidden flex flex-col items-center justify-center py-24 space-y-8">
             <div class="relative">
-                <div class="w-16 h-16 border-4 border-indigo-100 dark:border-slate-800 border-t-indigo-600 rounded-full animate-spin"></div>
-                <i data-lucide="search" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-indigo-600" size="24"></i>
+                <div class="spinner-ring w-20 h-20 rounded-full"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <i data-lucide="brain" class="text-indigo-600 dark:text-indigo-400" size="28"></i>
+                </div>
             </div>
-            <div class="text-center">
-                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Analyzing Resume...</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm">Our AI is extracting skills and calculating gaps.</p>
+            <div class="text-center space-y-3">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Analyzing Resume<span
+                        class="loading-dots"></span></h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto">Our AI is extracting skills and
+                    calculating gaps.</p>
+                <div class="flex items-center justify-center space-x-6 pt-4">
+                    <div
+                        class="progress-step active flex items-center space-x-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                        <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i><span>Uploading</span>
+                    </div>
+                    <div class="w-6 h-px bg-slate-300 dark:bg-slate-700"></div>
+                    <div
+                        class="progress-step flex items-center space-x-1.5 text-xs font-semibold text-slate-400 dark:text-slate-500">
+                        <i data-lucide="file-scan" class="w-3.5 h-3.5"></i><span>Parsing</span>
+                    </div>
+                    <div class="w-6 h-px bg-slate-300 dark:bg-slate-700"></div>
+                    <div
+                        class="progress-step flex items-center space-x-1.5 text-xs font-semibold text-slate-400 dark:text-slate-500">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i><span>Analyzing</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Results Dashboard -->
-        <div id="results-dashboard" class="hidden animate-in">
+        <div id="results-dashboard" class="hidden">
             <!-- Summary Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center space-x-4">
-                    <div class="p-3 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="glass-card p-6 rounded-2xl flex items-center space-x-4 animate-in">
+                    <div class="stat-icon-indigo p-3.5 rounded-xl text-indigo-600 dark:text-indigo-400">
                         <i data-lucide="award" size="24"></i>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Match Score</p>
-                        <p id="stat-score" class="text-2xl font-bold text-slate-900 dark:text-white">0%</p>
+                        <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Match
+                            Score</p>
+                        <p id="stat-score" class="text-3xl font-black text-slate-900 dark:text-white">0%</p>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center space-x-4">
-                    <div class="p-3 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+                <div class="glass-card p-6 rounded-2xl flex items-center space-x-4 animate-in delay-1">
+                    <div class="stat-icon-emerald p-3.5 rounded-xl text-emerald-600 dark:text-emerald-400">
                         <i data-lucide="check-circle-2" size="24"></i>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Matched Skills</p>
-                        <p id="stat-matched" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
+                        <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Matched
+                            Skills</p>
+                        <p id="stat-matched" class="text-3xl font-black text-slate-900 dark:text-white">0</p>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center space-x-4">
-                    <div class="p-3 rounded-xl bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400">
+                <div class="glass-card p-6 rounded-2xl flex items-center space-x-4 animate-in delay-2">
+                    <div class="stat-icon-rose p-3.5 rounded-xl text-rose-600 dark:text-rose-400">
                         <i data-lucide="x-circle" size="24"></i>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Skill Gaps</p>
-                        <p id="stat-missing" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
+                        <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Skill
+                            Gaps</p>
+                        <p id="stat-missing" class="text-3xl font-black text-slate-900 dark:text-white">0</p>
                     </div>
                 </div>
             </div>
@@ -158,22 +744,39 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Left Content -->
                 <div class="lg:col-span-2 space-y-8">
-                    <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-                        <div class="flex items-center space-x-3 mb-4">
-                            <h2 class="text-xl font-bold dark:text-white">Expert Feedback</h2>
-                            <span id="rating-badge" class="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs font-bold rounded-full">Good</span>
+                    <div class="glass-card p-8 md:p-10 rounded-3xl animate-in delay-3">
+                        <div class="flex items-center space-x-3 mb-5">
+                            <div class="p-2 rounded-lg bg-indigo-100/70 dark:bg-indigo-900/30">
+                                <i data-lucide="message-square"
+                                    class="text-indigo-600 dark:text-indigo-400 w-5 h-5"></i>
+                            </div>
+                            <h2 class="text-xl font-extrabold dark:text-white">Expert Feedback</h2>
+                            <span id="rating-badge"
+                                class="badge-gradient px-3 py-1 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-full">Good</span>
                         </div>
-                        <p id="career-feedback-text" class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg"></p>
+                        <p id="career-feedback-text" class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                        </p>
                     </div>
 
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
-                        <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100 dark:divide-slate-700">
+                    <div class="glass-card rounded-3xl overflow-hidden animate-in delay-4">
+                        <div
+                            class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200/30 dark:divide-slate-700/30">
                             <div class="p-8">
-                                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6">Matched Competencies</h3>
+                                <div class="flex items-center space-x-2 mb-6">
+                                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                    <h3
+                                        class="text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em]">
+                                        Matched Competencies</h3>
+                                </div>
                                 <div id="matched-skills-container" class="flex flex-wrap"></div>
                             </div>
-                            <div class="p-8 bg-slate-50/30 dark:bg-slate-900/10">
-                                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6">Missing Requirements</h3>
+                            <div class="p-8">
+                                <div class="flex items-center space-x-2 mb-6">
+                                    <div class="w-2 h-2 rounded-full bg-rose-500"></div>
+                                    <h3
+                                        class="text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em]">
+                                        Missing Requirements</h3>
+                                </div>
                                 <div id="missing-skills-container" class="flex flex-wrap"></div>
                             </div>
                         </div>
@@ -182,23 +785,26 @@
 
                 <!-- Right Sidebar -->
                 <div class="space-y-8">
-                    <div class="bg-indigo-600 dark:bg-indigo-700 text-white p-8 rounded-3xl shadow-lg shadow-indigo-100 dark:shadow-none">
-                        <h3 class="text-lg font-bold mb-6 flex items-center">
-                            <i data-lucide="trending-up" class="mr-2" size="20"></i>
+                    <div
+                        class="next-steps-card text-white p-8 rounded-3xl shadow-xl shadow-indigo-200/30 dark:shadow-indigo-900/20 animate-in delay-5">
+                        <h3 class="text-lg font-extrabold mb-6 flex items-center relative z-10">
+                            <i data-lucide="trending-up" class="mr-2.5" size="20"></i>
                             Next Steps
                         </h3>
-                        <ul id="recommendations-list" class="space-y-4"></ul>
+                        <ul id="recommendations-list" class="space-y-4 relative z-10"></ul>
                     </div>
 
-                    <div id="resources-card" class="hidden bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-                        <h3 class="text-lg font-bold mb-6 flex items-center">
-                            <i data-lucide="book-open" class="mr-2 text-indigo-600 dark:text-indigo-400" size="20"></i>
+                    <div id="resources-card" class="hidden glass-card p-8 rounded-3xl animate-in delay-6">
+                        <h3 class="text-lg font-extrabold mb-6 flex items-center">
+                            <i data-lucide="book-open" class="mr-2.5 text-indigo-600 dark:text-indigo-400"
+                                size="20"></i>
                             Learning Paths
                         </h3>
-                        <div id="resources-container" class="space-y-4"></div>
+                        <div id="resources-container" class="space-y-3"></div>
                     </div>
 
-                    <button onclick="window.location.reload()" class="w-full py-4 border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-white transition-all focus:outline-none">
+                    <button onclick="window.location.reload()"
+                        class="btn-secondary w-full py-4 text-slate-500 dark:text-slate-400 font-bold rounded-2xl focus:outline-none">
                         Start New Analysis
                     </button>
                 </div>
@@ -207,29 +813,36 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 border-t border-slate-200 dark:border-slate-800 transition-colors duration-200">
+    <footer class="pt-0 pb-10">
+        <div class="footer-gradient mb-10"></div>
         <div class="max-w-5xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 text-center md:text-left">
+            <div
+                class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 text-center md:text-left">
                 <div>
-                    <p class="text-slate-900 dark:text-white font-bold text-lg mb-1">AI Resume Analyzer</p>
-                    <p class="text-slate-400 dark:text-slate-500 text-sm italic">
+                    <p class="text-slate-900 dark:text-white font-extrabold text-lg mb-1">
+                        AI Resume <span class="gradient-text">Analyzer</span>
+                    </p>
+                    <p class="text-slate-400 dark:text-slate-600 text-sm">
                         &copy; 2026 AI Resume Analyzer. Built by Jyotirmoy Laha.
                     </p>
                 </div>
-                
-                <!-- Contact Links -->
-               <div class="flex flex-col items-center md:items-end space-y-2">
-                    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 dark:text-slate-500" >Contact Me</p>
-                    <div class="flex items-center space-x-6">
-                    <a href="https://www.linkedin.com/in/jyotirmoy-laha-416818319/" target="_blank" title="LinkedIn" class="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        <i data-lucide="linkedin" size="20"></i>
-                    </a>
-                    <a href="https://github.com/JyotirmoyLaha" target="_blank" title="GitHub" class="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        <i data-lucide="github" size="20"></i>
-                    </a>
-                    <a href="mailto:jyotirmoy713128@gmail.com" title="Email" class="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        <i data-lucide="mail" size="20"></i>
-                    </a>
+                <div class="flex flex-col items-center md:items-end space-y-3">
+                    <p class="text-[10px] uppercase tracking-[0.25em] font-bold text-slate-400 dark:text-slate-600">
+                        Contact Me</p>
+                    <div class="flex items-center space-x-5">
+                        <a href="https://www.linkedin.com/in/jyotirmoy-laha-416818319/" target="_blank" title="LinkedIn"
+                            class="social-icon text-slate-400 transition-colors">
+                            <i data-lucide="linkedin" size="20"></i>
+                        </a>
+                        <a href="https://github.com/JyotirmoyLaha" target="_blank" title="GitHub"
+                            class="social-icon text-slate-400 transition-colors">
+                            <i data-lucide="github" size="20"></i>
+                        </a>
+                        <a href="mailto:jyotirmoy713128@gmail.com" title="Email"
+                            class="social-icon text-slate-400 transition-colors">
+                            <i data-lucide="mail" size="20"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -267,7 +880,7 @@
         const errorDiv = document.getElementById('error-message');
         const errorText = document.getElementById('error-text');
         const roleSelect = document.getElementById('role-select');
-        
+
         const heroSection = document.getElementById('hero-section');
         const inputSection = document.getElementById('input-section');
         const loader = document.getElementById('loader');
@@ -286,19 +899,19 @@
                 const res = await fetch(`${API_BASE_URL}/roles`);
                 if (!res.ok) throw new Error();
                 const roles = await res.json();
-                
+
                 // Keep the default disabled option and add dynamic ones
                 const defaultOption = `<option value="" disabled selected>Select a role</option>`;
-                roleSelect.innerHTML = defaultOption + roles.map(r => 
+                roleSelect.innerHTML = defaultOption + roles.map(r =>
                     `<option value="${r}">${r.charAt(0).toUpperCase() + r.slice(1).replace('_', ' ')} Developer</option>`
                 ).join('');
-                
+
                 lucide.createIcons();
             } catch (err) {
                 console.warn("Backend not reachable. Ensure your server is running.");
             }
         }
-        
+
         // Handle Role Change
         roleSelect.addEventListener('change', validateInput);
 
@@ -309,11 +922,11 @@
                 selectedFile = file;
                 fileNameDisplay.textContent = file.name;
                 fileSizeDisplay.textContent = `${(file.size / 1024).toFixed(1)} KB`;
-                
-                dropZone.classList.add('border-indigo-300', 'dark:border-indigo-500', 'bg-indigo-50/30', 'dark:bg-indigo-900/10');
-                uploadIconContainer.classList.add('bg-indigo-100', 'dark:bg-indigo-900/30', 'text-indigo-600', 'dark:text-indigo-400');
-                uploadIconContainer.classList.remove('bg-slate-100', 'dark:bg-slate-700', 'text-slate-500', 'dark:text-slate-400');
-                
+
+                dropZone.classList.add('file-selected');
+                uploadIconContainer.classList.add('!bg-indigo-100', 'dark:!bg-indigo-900/30', '!text-indigo-600', 'dark:!text-indigo-400');
+                uploadIconContainer.classList.remove('bg-slate-100/80', 'dark:bg-slate-700/50', 'text-slate-400', 'dark:text-slate-500');
+
                 errorDiv.classList.add('hidden');
                 validateInput();
             } else {
@@ -329,15 +942,15 @@
         // Drop Zone Listeners
         dropZone.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-        
+
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
-            dropZone.classList.add('border-indigo-400', 'bg-slate-100', 'dark:bg-slate-800');
+            dropZone.classList.add('file-selected');
         });
-        
+
         dropZone.addEventListener('dragleave', () => {
             if (!selectedFile) {
-                dropZone.classList.remove('border-indigo-400', 'bg-slate-100', 'dark:bg-slate-800');
+                dropZone.classList.remove('file-selected');
             }
         });
 
@@ -346,7 +959,25 @@
             handleFiles(e.dataTransfer.files);
         });
 
+        // Loading progress steps animation
+        function animateLoadingSteps() {
+            const steps = document.querySelectorAll('.progress-step');
+            let current = 0;
+            const interval = setInterval(() => {
+                if (current < steps.length) {
+                    steps.forEach((s, i) => {
+                        if (i <= current) s.classList.add('active');
+                    });
+                    current++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 1500);
+            return interval;
+        }
+
         // Analyze Logic
+        let loadingInterval = null;
         analyzeBtn.addEventListener('click', async () => {
             if (!selectedFile || !roleSelect.value) return;
 
@@ -354,6 +985,11 @@
             inputSection.classList.add('hidden');
             loader.classList.remove('hidden');
             errorDiv.classList.add('hidden');
+
+            // Reset progress steps
+            document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active'));
+            document.querySelector('.progress-step').classList.add('active');
+            loadingInterval = animateLoadingSteps();
 
             const formData = new FormData();
             formData.append("resume", selectedFile);
@@ -370,6 +1006,7 @@
 
                 renderResults(data);
             } catch (err) {
+                if (loadingInterval) clearInterval(loadingInterval);
                 loader.classList.add('hidden');
                 heroSection.classList.remove('hidden');
                 inputSection.classList.remove('hidden');
@@ -378,32 +1015,35 @@
         });
 
         function renderResults(data) {
+            if (loadingInterval) clearInterval(loadingInterval);
             loader.classList.add('hidden');
             resultsDashboard.classList.remove('hidden');
 
-            document.getElementById('stat-score').textContent = `${data.match_percentage}%`;
-            document.getElementById('stat-matched').textContent = data.total_matched;
-            document.getElementById('stat-missing').textContent = data.total_missing;
+            // Animate stat counters
+            animateCounter('stat-score', data.match_percentage, '%');
+            animateCounter('stat-matched', data.total_matched);
+            animateCounter('stat-missing', data.total_missing);
+
             document.getElementById('rating-badge').textContent = data.rating;
             document.getElementById('career-feedback-text').textContent = data.career_feedback;
 
             const matchedContainer = document.getElementById('matched-skills-container');
             matchedContainer.innerHTML = data.matched_skills.map(s => `
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50">
-                    <i data-lucide="check-circle-2" class="mr-1 w-3 h-3"></i> ${s}
+                <span class="skill-tag inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold mr-2 mb-2.5 bg-emerald-50/80 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40 backdrop-blur-sm">
+                    <i data-lucide="check-circle-2" class="mr-1.5 w-3 h-3"></i> ${s}
                 </span>
             `).join('') || '<p class="text-slate-400 text-sm italic">No matching skills detected.</p>';
 
             const missingContainer = document.getElementById('missing-skills-container');
             missingContainer.innerHTML = data.missing_skills.map(s => `
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2 bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400 border border-rose-100 dark:border-rose-900/50">
-                    <i data-lucide="x-circle" class="mr-1 w-3 h-3"></i> ${s}
+                <span class="skill-tag inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold mr-2 mb-2.5 bg-rose-50/80 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400 border border-rose-200/50 dark:border-rose-800/40 backdrop-blur-sm">
+                    <i data-lucide="x-circle" class="mr-1.5 w-3 h-3"></i> ${s}
                 </span>
             `).join('') || '<p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium">Perfect match!</p>';
 
             document.getElementById('recommendations-list').innerHTML = data.recommendations.map(rec => `
                 <li class="flex items-start space-x-3 text-sm text-indigo-100 dark:text-indigo-200">
-                    <div class="mt-1 bg-white/20 p-1 rounded-md"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-white"></i></div>
+                    <div class="mt-0.5 bg-white/20 p-1 rounded-md flex-shrink-0"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-white"></i></div>
                     <span>${rec}</span>
                 </li>
             `).join('');
@@ -413,9 +1053,9 @@
             if (data.learning_resources && Object.keys(data.learning_resources).length > 0) {
                 resourcesCard.classList.remove('hidden');
                 resourcesContainer.innerHTML = Object.entries(data.learning_resources).map(([skill, url]) => `
-                    <a href="${url}" target="_blank" class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all group">
-                        <span class="font-semibold text-slate-700 dark:text-slate-300 capitalize text-sm">${skill}</span>
-                        <i data-lucide="arrow-right" class="text-slate-300 dark:text-slate-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-all w-4 h-4"></i>
+                    <a href="${url}" target="_blank" class="resource-link flex items-center justify-between p-3.5 rounded-xl border border-slate-200/40 dark:border-slate-700/40 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 group backdrop-blur-sm">
+                        <span class="font-bold text-slate-700 dark:text-slate-300 capitalize text-sm">${skill}</span>
+                        <i data-lucide="arrow-right" class="arrow-icon text-slate-300 dark:text-slate-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 w-4 h-4"></i>
                     </a>
                 `).join('');
             } else {
@@ -425,7 +1065,26 @@
             lucide.createIcons();
         }
 
+        // Animated counter
+        function animateCounter(id, target, suffix = '') {
+            const el = document.getElementById(id);
+            const num = parseInt(target);
+            if (isNaN(num)) { el.textContent = target; return; }
+            let current = 0;
+            const duration = 1200;
+            const step = Math.max(1, Math.floor(num / (duration / 16)));
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= num) {
+                    current = num;
+                    clearInterval(timer);
+                }
+                el.textContent = current + suffix;
+            }, 16);
+        }
+
         fetchRoles();
     </script>
 </body>
+
 </html>

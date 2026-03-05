@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -10,772 +10,1137 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        tailwind.config = { darkMode: 'class' }
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        surface: { primary: '#0B1120', secondary: '#0F172A' },
+                    }
+                }
+            }
+        }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         /* ===== BASE ===== */
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
+            background: #0B1120;
+            color: #E5E7EB;
         }
 
-        /* ===== ANIMATED MESH GRADIENT BACKGROUND ===== */
-        .bg-mesh {
+        html { scroll-behavior: smooth; }
+
+        ::selection { background: rgba(124,58,237,0.35); color: #fff; }
+
+        /* ===== ATMOSPHERIC BACKGROUND ===== */
+        .bg-atmosphere {
             position: fixed;
             inset: 0;
-            z-index: -1;
-            background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 25%, #f5f0ff 50%, #eef6ff 75%, #f0f4ff 100%);
-            background-size: 400% 400%;
-            animation: meshShift 20s ease infinite;
+            z-index: -2;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(124,58,237,0.25), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(34,211,238,0.20), transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(99,102,241,0.08), transparent 60%),
+                #0B1120;
         }
 
-        .dark .bg-mesh {
-            background: linear-gradient(135deg, #0a0e1a 0%, #0f1629 25%, #130f24 50%, #0d1520 75%, #0a0e1a 100%);
-            background-size: 400% 400%;
-        }
-
-        @keyframes meshShift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            25% {
-                background-position: 100% 0%;
-            }
-
-            50% {
-                background-position: 100% 100%;
-            }
-
-            75% {
-                background-position: 0% 100%;
-            }
-        }
-
-        /* ===== FLOATING ORBS ===== */
+        /* ===== FLOATING GRADIENT ORBS ===== */
         .orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.35;
+            filter: blur(100px);
+            opacity: 0.18;
             pointer-events: none;
             z-index: -1;
         }
-
         .orb-1 {
-            width: 500px;
-            height: 500px;
-            background: #818cf8;
-            top: -120px;
-            left: -100px;
-            animation: orbFloat1 18s ease-in-out infinite;
+            width: 600px; height: 600px;
+            background: linear-gradient(135deg, #7C3AED, #6366F1);
+            top: -200px; left: -150px;
+            animation: orbFloat1 20s ease-in-out infinite;
         }
-
         .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: #c084fc;
-            bottom: -80px;
-            right: -60px;
-            animation: orbFloat2 22s ease-in-out infinite;
+            width: 500px; height: 500px;
+            background: linear-gradient(135deg, #22D3EE, #6366F1);
+            bottom: -150px; right: -100px;
+            animation: orbFloat2 25s ease-in-out infinite;
         }
-
         .orb-3 {
-            width: 300px;
-            height: 300px;
-            background: #38bdf8;
-            top: 50%;
-            left: 60%;
-            animation: orbFloat3 15s ease-in-out infinite;
+            width: 350px; height: 350px;
+            background: linear-gradient(135deg, #7C3AED, #22D3EE);
+            top: 40%; left: 55%;
+            animation: orbFloat3 18s ease-in-out infinite;
         }
-
-        .dark .orb {
-            opacity: 0.12;
+        .orb-4 {
+            width: 200px; height: 200px;
+            background: #6366F1;
+            top: 70%; left: 10%;
+            animation: orbFloat1 22s ease-in-out infinite reverse;
         }
 
         @keyframes orbFloat1 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            50% {
-                transform: translate(60px, 40px) scale(1.1);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(80px, 50px) scale(1.1); }
         }
-
         @keyframes orbFloat2 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            50% {
-                transform: translate(-50px, -30px) scale(1.15);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-60px, -40px) scale(1.15); }
         }
-
         @keyframes orbFloat3 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            50% {
-                transform: translate(30px, -50px) scale(0.9);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -60px) scale(0.9); }
         }
 
         /* ===== GLASSMORPHISM ===== */
         .glass {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .dark .glass {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(100, 116, 139, 0.2);
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(16px) saturate(1.6);
-            -webkit-backdrop-filter: blur(16px) saturate(1.6);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: transform 0.35s cubic-bezier(.22, .61, .36, 1), box-shadow 0.35s ease;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-
-        .dark .glass-card {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(100, 116, 139, 0.18);
-        }
-
         .glass-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.15);
-        }
-
-        .dark .glass-card:hover {
-            box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.25);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45), 0 0 40px rgba(124,58,237,0.08);
+            border-color: rgba(255,255,255,0.12);
         }
 
         /* ===== STAGGERED ENTRANCE ===== */
         .animate-in {
             opacity: 0;
-            transform: translateY(24px);
-            animation: slideUp 0.7s cubic-bezier(.22, .61, .36, 1) forwards;
+            transform: translateY(30px);
+            animation: slideUp 0.7s cubic-bezier(.22,.61,.36,1) forwards;
         }
-
-        .delay-1 {
-            animation-delay: 0.1s;
-        }
-
-        .delay-2 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-3 {
-            animation-delay: 0.3s;
-        }
-
-        .delay-4 {
-            animation-delay: 0.4s;
-        }
-
-        .delay-5 {
-            animation-delay: 0.5s;
-        }
-
-        .delay-6 {
-            animation-delay: 0.6s;
-        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
 
         @keyframes slideUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* ===== GRADIENT TEXT ===== */
         .gradient-text {
-            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            background: linear-gradient(135deg, #7C3AED, #6366F1, #22D3EE);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .dark .gradient-text {
-            background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* ===== NAV GLOW ===== */
+        /* ===== NAVBAR ===== */
         .nav-glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(24px) saturate(2);
-            -webkit-backdrop-filter: blur(24px) saturate(2);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-        }
-
-        .dark .nav-glass {
-            background: rgba(15, 23, 42, 0.7);
-            border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+            background: rgba(11,17,32,0.75);
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
         /* ===== LOGO PULSE ===== */
         .logo-icon {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: linear-gradient(135deg, #7C3AED, #6366F1);
             animation: logoPulse 3s ease-in-out infinite;
         }
-
         @keyframes logoPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
-            }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(124,58,237,0); }
         }
 
-        /* ===== UPLOAD ZONE ANIMATED BORDER ===== */
+        /* ===== UPLOAD ZONE ===== */
         .upload-zone {
             position: relative;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255,255,255,0.03);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 2px dashed transparent;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
-                linear-gradient(135deg, #cbd5e1, #e2e8f0, #cbd5e1);
-            background-origin: border-box;
-            background-clip: padding-box, border-box;
-            transition: all 0.4s ease;
+            border: 2px dashed rgba(255,255,255,0.12);
+            border-radius: 16px;
+            transition: all 0.3s ease;
         }
-
-        .dark .upload-zone {
-            background-image: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)),
-                linear-gradient(135deg, #334155, #1e293b, #334155);
-        }
-
         .upload-zone:hover,
         .upload-zone.file-selected {
-            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
-                linear-gradient(135deg, #6366f1, #a855f7, #6366f1);
-            box-shadow: 0 0 30px -8px rgba(99, 102, 241, 0.2);
+            border-color: rgba(124,58,237,0.5);
+            background: rgba(124,58,237,0.05);
+            box-shadow: 0 0 40px rgba(124,58,237,0.12);
+            transform: scale(1.01);
         }
-
-        .dark .upload-zone:hover,
-        .dark .upload-zone.file-selected {
-            background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)),
-                linear-gradient(135deg, #6366f1, #a855f7, #6366f1);
-            box-shadow: 0 0 30px -8px rgba(99, 102, 241, 0.3);
-        }
-
         .upload-zone .icon-wrap {
-            transition: transform 0.4s cubic-bezier(.22, .61, .36, 1), box-shadow 0.4s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .upload-zone:hover .icon-wrap {
             transform: scale(1.12);
-            box-shadow: 0 8px 24px -6px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 30px rgba(124,58,237,0.25);
         }
 
-        /* ===== BUTTON GLOW ===== */
+        /* ===== PRIMARY BUTTON ===== */
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #7c3aed);
-            box-shadow: 0 8px 24px -6px rgba(99, 102, 241, 0.4);
-            transition: all 0.35s ease;
+            background: linear-gradient(135deg, #7C3AED, #6366F1);
+            box-shadow: 0 8px 30px rgba(124,58,237,0.35);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-
         .btn-primary::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.15) 50%, transparent 60%);
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
             transform: translateX(-100%);
             transition: transform 0.6s ease;
         }
-
-        .btn-primary:hover::before {
-            transform: translateX(100%);
-        }
-
+        .btn-primary:hover::before { transform: translateX(100%); }
         .btn-primary:hover {
-            box-shadow: 0 12px 32px -6px rgba(99, 102, 241, 0.55);
+            box-shadow: 0 14px 40px rgba(124,58,237,0.5);
             transform: translateY(-2px);
         }
-
         .btn-primary:disabled {
-            background: #cbd5e1;
+            background: rgba(255,255,255,0.06);
             box-shadow: none;
             transform: none;
+            color: #475569;
+        }
+        .btn-primary:disabled::before { display: none; }
+
+        /* ===== SECONDARY BUTTON ===== */
+        .btn-secondary {
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            border-color: rgba(124,58,237,0.5);
+            color: #C4B5FD;
+            background: rgba(124,58,237,0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124,58,237,0.15);
         }
 
-        .dark .btn-primary:disabled {
-            background: #334155;
-        }
-
-        .btn-primary:disabled::before {
-            display: none;
-        }
-
-        /* ===== STAT CARD GRADIENT ICONS ===== */
+        /* ===== STAT CARD ICONS ===== */
         .stat-icon-indigo {
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(99,102,241,0.15));
         }
-
-        .dark .stat-icon-indigo {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(129, 140, 248, 0.15));
-        }
-
         .stat-icon-emerald {
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.15));
         }
-
-        .dark .stat-icon-emerald {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.15));
-        }
-
         .stat-icon-rose {
-            background: linear-gradient(135deg, #ffe4e6, #fecdd3);
+            background: linear-gradient(135deg, rgba(244,63,94,0.2), rgba(251,113,133,0.15));
         }
 
-        .dark .stat-icon-rose {
-            background: linear-gradient(135deg, rgba(244, 63, 94, 0.2), rgba(251, 113, 133, 0.15));
-        }
-
-        /* ===== SKILL TAG ===== */
+        /* ===== SKILL TAGS ===== */
         .skill-tag {
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .skill-tag:hover {
             transform: scale(1.08);
-            box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         }
 
-        /* ===== NEXT STEPS CARD GRADIENT ===== */
+        /* ===== NEXT STEPS CARD ===== */
         .next-steps-card {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed, #6d28d9);
+            background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(99,102,241,0.2));
+            border: 1px solid rgba(124,58,237,0.3);
             position: relative;
             overflow: hidden;
         }
-
         .next-steps-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+            background:
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(34,211,238,0.08) 0%, transparent 50%);
         }
 
         /* ===== RESOURCE LINK ===== */
         .resource-link {
             transition: all 0.3s ease;
         }
-
         .resource-link:hover {
             transform: translateX(4px);
-            border-color: #818cf8 !important;
+            border-color: rgba(124,58,237,0.5) !important;
+            background: rgba(124,58,237,0.06);
         }
+        .resource-link:hover .arrow-icon { transform: translateX(6px); }
+        .arrow-icon { transition: transform 0.3s ease; }
 
-        .resource-link:hover .arrow-icon {
-            transform: translateX(4px);
-        }
-
-        .arrow-icon {
-            transition: transform 0.3s ease;
-        }
-
-        /* ===== LOADING SPINNER ===== */
+        /* ===== SPINNER ===== */
         .spinner-ring {
-            border: 4px solid rgba(99, 102, 241, 0.15);
-            border-top-color: #6366f1;
-            animation: spinSmooth 1s cubic-bezier(.4, .0, .2, 1) infinite;
+            border: 4px solid rgba(124,58,237,0.15);
+            border-top-color: #7C3AED;
+            animation: spinSmooth 1s cubic-bezier(.4,.0,.2,1) infinite;
         }
-
-        @keyframes spinSmooth {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spinSmooth { to { transform: rotate(360deg); } }
 
         .loading-dots::after {
             content: '';
             animation: dots 1.5s steps(4) infinite;
         }
-
         @keyframes dots {
-            0% {
-                content: '';
-            }
-
-            25% {
-                content: '.';
-            }
-
-            50% {
-                content: '..';
-            }
-
-            75% {
-                content: '...';
-            }
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
         }
 
         /* ===== PROGRESS STEPS ===== */
-        .progress-step {
-            opacity: 0.4;
-            transition: opacity 0.5s ease, color 0.5s ease;
-        }
+        .progress-step { opacity: 0.4; transition: opacity 0.5s ease; }
+        .progress-step.active { opacity: 1; }
 
-        .progress-step.active {
-            opacity: 1;
-        }
-
-        /* ===== FOOTER GRADIENT LINE ===== */
+        /* ===== FOOTER ===== */
         .footer-gradient {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #6366f1, #a855f7, #6366f1, transparent);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124,58,237,0.5), rgba(34,211,238,0.3), rgba(124,58,237,0.5), transparent);
         }
+        .footer-link {
+            color: #94A3B8;
+            transition: color 0.3s ease;
+        }
+        .footer-link:hover { color: #E5E7EB; }
 
         /* ===== SOCIAL ICON HOVER ===== */
         .social-icon {
             position: relative;
             transition: all 0.3s ease;
+            color: #94A3B8;
         }
-
         .social-icon::before {
             content: '';
             position: absolute;
-            inset: -6px;
+            inset: -8px;
             border-radius: 50%;
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(124,58,237,0.12);
             transform: scale(0);
             transition: transform 0.3s ease;
         }
-
-        .social-icon:hover::before {
-            transform: scale(1);
-        }
-
-        .social-icon:hover {
-            color: #6366f1;
-        }
-
-        .dark .social-icon:hover {
-            color: #818cf8;
-        }
-
-        /* ===== SECONDARY BUTTON ===== */
-        .btn-secondary {
-            position: relative;
-            border: 2px solid rgba(148, 163, 184, 0.3);
-            transition: all 0.35s ease;
-        }
-
-        .btn-secondary:hover {
-            border-color: #6366f1;
-            color: #6366f1;
-            background: rgba(99, 102, 241, 0.05);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px -8px rgba(99, 102, 241, 0.2);
-        }
-
-        .dark .btn-secondary:hover {
-            border-color: #818cf8;
-            color: #818cf8;
-            background: rgba(99, 102, 241, 0.08);
-        }
-
-        /* ===== SCROLL SMOOTH ===== */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* ===== THEME TRANSITION ===== */
-        .theme-transition,
-        .theme-transition * {
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-        }
+        .social-icon:hover::before { transform: scale(1); }
+        .social-icon:hover { color: #A78BFA; }
 
         /* ===== SELECT STYLING ===== */
         .select-premium {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255,255,255,0.04);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             transition: all 0.3s ease;
         }
-
-        .dark .select-premium {
-            background: rgba(15, 23, 42, 0.4);
-        }
-
         .select-premium:focus {
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.25);
+            border-color: rgba(124,58,237,0.5);
+        }
+        .select-premium option {
+            background: #0F172A;
+            color: #E5E7EB;
         }
 
-        /* ===== RATING BADGE GRADIENT ===== */
+        /* ===== BADGE ===== */
         .badge-gradient {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(99,102,241,0.2));
+            border: 1px solid rgba(124,58,237,0.3);
         }
 
-        .dark .badge-gradient {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
-            border: 1px solid rgba(99, 102, 241, 0.3);
+        /* ===== HERO AI GRAPHIC ===== */
+        .hero-graphic {
+            position: relative;
+        }
+        .hero-graphic-inner {
+            width: 440px;
+            height: 440px;
+            position: relative;
+        }
+        @media (max-width: 767px) {
+            .hero-graphic-inner { width: 320px; height: 320px; }
+        }
+        .hero-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(124,58,237,0.15);
+            animation: heroRingSpin 20s linear infinite;
+        }
+        .hero-ring-1 { inset: 0; }
+        .hero-ring-2 { inset: 15%; animation-direction: reverse; animation-duration: 15s; border-color: rgba(99,102,241,0.12); }
+        .hero-ring-3 { inset: 30%; animation-duration: 25s; border-color: rgba(34,211,238,0.1); }
+        .hero-dot {
+            position: absolute;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #7C3AED;
+            box-shadow: 0 0 12px rgba(124,58,237,0.5);
+        }
+        .hero-dot-1 { top: 0; left: 50%; transform: translateX(-50%); }
+        .hero-dot-2 { bottom: 15%; right: 10%; background: #22D3EE; box-shadow: 0 0 12px rgba(34,211,238,0.5); }
+        .hero-dot-3 { top: 30%; left: 5%; background: #6366F1; box-shadow: 0 0 12px rgba(99,102,241,0.5); }
+
+        /* Center brain icon with pulse glow */
+        .hero-center-icon {
+            position: absolute;
+            inset: 35%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 30px rgba(124,58,237,0.2);
+            animation: centerPulse 2s ease-in-out infinite;
+        }
+        @keyframes centerPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(124,58,237,0.2); }
+            50% { transform: scale(1.08); box-shadow: 0 0 50px rgba(124,58,237,0.35); }
+        }
+        @keyframes heroRingSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== FLOATING STAT MINI CARDS ON HERO ===== */
+        /* Cards are positioned radially from center using top/left percentages.
+           Center of graphic = 50%, 50%.
+           Card 1 (Skills Matched): 45° at ~220px → top-right
+           Card 2 (AI Analysis):   315° at ~220px → bottom-right
+           Card 3 (Learning Path): 180° at ~200px → left center
+        */
+        .hero-float-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 10px 16px;
+            white-space: nowrap;
+            z-index: 10;
+            position: absolute;
+        }
+
+        /* Skills Matched — top-right, 45° */
+        .hero-float-card-1 {
+            top: 2%;
+            right: -4%;
+            box-shadow: 0 0 20px rgba(16,185,129,0.25), 0 8px 32px rgba(0,0,0,0.3);
+            animation: floatCard1 3s ease-in-out infinite;
+        }
+        /* AI Analysis — bottom-right, 315° */
+        .hero-float-card-2 {
+            bottom: 2%;
+            right: -4%;
+            box-shadow: 0 0 20px rgba(139,92,246,0.25), 0 8px 32px rgba(0,0,0,0.3);
+            animation: floatCard2 3s ease-in-out 1s infinite;
+        }
+        /* Learning Path — left center, 180° */
+        .hero-float-card-3 {
+            top: 50%;
+            left: -8%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 20px rgba(56,189,248,0.25), 0 8px 32px rgba(0,0,0,0.3);
+            animation: floatCard3 3s ease-in-out 0.5s infinite;
+        }
+
+        @keyframes floatCard1 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes floatCard2 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+        @keyframes floatCard3 {
+            0%, 100% { transform: translateY(-50%); }
+            50% { transform: translateY(calc(-50% - 6px)); }
+        }
+
+        /* Mobile adjustments for floating cards */
+        @media (max-width: 767px) {
+            .hero-float-card-1 { top: -6%; right: -2%; }
+            .hero-float-card-2 { bottom: -6%; right: -2%; }
+            .hero-float-card-3 { left: -6%; }
+        }
+
+        /* ===== INSIGHT CARD ===== */
+        .insight-card {
+            background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(34,211,238,0.05));
+            border: 1px solid rgba(124,58,237,0.15);
+            border-radius: 16px;
+        }
+
+        /* Learning Path Card */
+        .learning-card {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+        }
+        .learning-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(124,58,237,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+        }
+        .learning-card:hover .learn-arrow {
+            transform: translateX(4px);
+        }
+        .learn-arrow { transition: transform 0.3s ease; }
+
+        /* Grid line decoration */
+        .grid-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+
+        /* ===== CINEMATIC SPLASH SCREEN ===== */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(124,58,237,0.35), transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(34,211,238,0.25), transparent 40%),
+                #0B1120;
+            opacity: 0;
+            will-change: opacity, transform;
+            pointer-events: none;
+        }
+
+        /* Phase 4: morph-out — splash becomes transparent and slides up */
+        #splash-screen.spl-morph {
+            background: transparent;
+            transition: opacity 1.2s cubic-bezier(.25,.46,.45,.94), transform 1.2s cubic-bezier(.25,.46,.45,.94), background 1s ease;
+            opacity: 0;
+            transform: translateY(-30px) scale(0.97);
+        }
+
+        /* Body lock during splash */
+        body.splash-active { overflow: hidden; }
+
+        /* Main content hidden during splash */
+        body.splash-active nav,
+        body.splash-active main,
+        body.splash-active footer,
+        body.splash-active .bg-atmosphere,
+        body.splash-active .grid-pattern,
+        body.splash-active .orb {
+            opacity: 0;
+        }
+
+        /* Reveal main content */
+        nav, main, footer, .bg-atmosphere, .grid-pattern, .orb {
+            transition: opacity 0.8s ease;
+        }
+
+        /* Particles */
+        .spl-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* Orbit container */
+        .spl-orbit-wrap {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            will-change: transform, opacity;
+        }
+
+        /* SVG orbits */
+        .spl-orbit-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+        .spl-arc {
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            transform-origin: 150px 150px;
+            will-change: stroke-dashoffset, opacity;
+        }
+        .spl-arc-1 {
+            stroke: rgba(124,58,237,0.8);
+            filter: drop-shadow(0 0 4px rgba(124,58,237,0.6));
+        }
+        .spl-arc-2 {
+            stroke: rgba(34,211,238,0.8);
+            filter: drop-shadow(0 0 4px rgba(34,211,238,0.6));
+        }
+        .spl-arc-3 {
+            stroke: rgba(99,102,241,0.8);
+            filter: drop-shadow(0 0 4px rgba(99,102,241,0.6));
+        }
+
+        /* Orbiting nodes */
+        .spl-node {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            top: calc(50% - 3px);
+            left: calc(50% - 3px);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+        .spl-node-1 {
+            background: #7C3AED;
+            box-shadow: 0 0 8px rgba(124,58,237,0.8), 0 0 20px rgba(124,58,237,0.3);
+        }
+        .spl-node-2 {
+            background: #22D3EE;
+            box-shadow: 0 0 8px rgba(34,211,238,0.8), 0 0 20px rgba(34,211,238,0.3);
+        }
+        .spl-node-3 {
+            background: #6366F1;
+            box-shadow: 0 0 8px rgba(99,102,241,0.8), 0 0 20px rgba(99,102,241,0.3);
+        }
+
+        /* Center AI core */
+        .spl-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.3);
+            width: 72px; height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(16px);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+        .spl-center svg { color: #C4B5FD; }
+
+        /* Splash status text */
+        .spl-status {
+            margin-top: 32px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748B;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0;
+            will-change: opacity;
+        }
+
+        /* Splash title — appears in Phase 4 morph */
+        .spl-title {
+            margin-top: 12px;
+            font-size: 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #E0D4FC 0%, #7C3AED 40%, #22D3EE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            will-change: opacity, font-size;
         }
     </style>
 </head>
 
-<body
-    class="min-h-screen text-slate-900 dark:text-slate-100 theme-transition selection:bg-indigo-200/60 selection:text-indigo-900">
+<body class="min-h-screen">
 
-    <!-- Animated Background -->
-    <div class="bg-mesh"></div>
+    <!-- ===== CINEMATIC SPLASH SCREEN ===== -->
+    <div id="splash-screen">
+        <!-- Floating particles -->
+        <div class="spl-particle" style="top:10%;left:15%;background:rgba(124,58,237,0.5)"></div>
+        <div class="spl-particle" style="top:20%;left:78%;background:rgba(34,211,238,0.5)"></div>
+        <div class="spl-particle" style="top:65%;left:10%;background:rgba(99,102,241,0.5)"></div>
+        <div class="spl-particle" style="top:75%;left:85%;background:rgba(124,58,237,0.4)"></div>
+        <div class="spl-particle" style="top:40%;left:5%;background:rgba(34,211,238,0.4)"></div>
+        <div class="spl-particle" style="top:30%;left:92%;background:rgba(99,102,241,0.4)"></div>
+        <div class="spl-particle" style="top:85%;left:40%;background:rgba(124,58,237,0.3)"></div>
+        <div class="spl-particle" style="top:5%;left:55%;background:rgba(34,211,238,0.3)"></div>
+        <div class="spl-particle" style="top:55%;left:90%;background:rgba(99,102,241,0.3)"></div>
+        <div class="spl-particle" style="top:92%;left:62%;background:rgba(124,58,237,0.3)"></div>
+        <div class="spl-particle" style="top:48%;left:22%;background:rgba(34,211,238,0.35)"></div>
+        <div class="spl-particle" style="top:15%;left:45%;background:rgba(99,102,241,0.35)"></div>
+
+        <!-- Orbit system -->
+        <div class="spl-orbit-wrap">
+            <svg class="spl-orbit-svg" viewBox="0 0 300 300">
+                <circle class="spl-arc spl-arc-1" cx="150" cy="150" r="140" stroke-dasharray="880" stroke-dashoffset="880"/>
+                <circle class="spl-arc spl-arc-2" cx="150" cy="150" r="108" stroke-dasharray="679" stroke-dashoffset="679"/>
+                <circle class="spl-arc spl-arc-3" cx="150" cy="150" r="80" stroke-dasharray="503" stroke-dashoffset="503"/>
+            </svg>
+            <div class="spl-node spl-node-1"></div>
+            <div class="spl-node spl-node-2"></div>
+            <div class="spl-node spl-node-3"></div>
+            <div class="spl-center">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+                </svg>
+            </div>
+        </div>
+        <p class="spl-status">Initializing AI Resume Intelligence...</p>
+        <h1 class="spl-title">AI Resume Analyzer</h1>
+    </div>
+
+    <!-- Splash animation controller — JS-driven for 60fps -->
+    <script>
+    (function() {
+        var spl = document.getElementById('splash-screen');
+        if (!spl) return;
+        document.body.classList.add('splash-active');
+
+        var particles = spl.querySelectorAll('.spl-particle');
+        var arcs = spl.querySelectorAll('.spl-arc');
+        var nodes = spl.querySelectorAll('.spl-node');
+        var center = spl.querySelector('.spl-center');
+        var status = spl.querySelector('.spl-status');
+        var title = spl.querySelector('.spl-title');
+        var orbitWrap = spl.querySelector('.spl-orbit-wrap');
+
+        // Orbit radii matching SVG circles
+        var orbitR = [140, 108, 80];
+        var orbitSpeed = [0.7, -0.5, 0.9]; // rads per sec, neg = reverse
+        var orbitAngle = [0, 2.09, 4.19]; // starting angles (120° apart)
+        var nodeOpacity = [0, 0, 0];
+        var centerScale = 0.3;
+        var centerOp = 0;
+        var splashOp = 0;
+        var statusOp = 0;
+        var arcProgress = [0, 0, 0]; // 0..1
+        var arcDash = [880, 679, 503]; // circumferences
+        var particleStates = [];
+
+        // Init particles
+        for (var i = 0; i < particles.length; i++) {
+            particleStates.push({ op: 0, dx: (Math.random() - 0.5) * 20, dy: (Math.random() - 0.5) * 20, phase: Math.random() * Math.PI * 2 });
+        }
+
+        var start = null;
+        var rafId;
+        var done = false;
+
+        function lerp(a, b, t) { return a + (b - a) * Math.min(Math.max(t, 0), 1); }
+        function ease(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+
+        function tick(ts) {
+            if (!start) start = ts;
+            var t = (ts - start) / 1000; // seconds
+
+            // === PHASE 1: 0–1.5s — fade in bg + particles + arcs draw ===
+            if (t < 1.5) {
+                splashOp = lerp(0, 1, t / 0.6);
+                for (var i = 0; i < particles.length; i++) {
+                    var delay = i * 0.08;
+                    particleStates[i].op = lerp(0, 0.7, (t - delay) / 0.8);
+                }
+                // Arcs draw from 0.3s–1.5s
+                arcProgress[0] = lerp(0, 1, ease((t - 0.3) / 1.0));
+                arcProgress[1] = lerp(0, 1, ease((t - 0.5) / 0.9));
+                arcProgress[2] = lerp(0, 1, ease((t - 0.7) / 0.8));
+            }
+
+            // === PHASE 2: 1.5s–3s — nodes orbit ===
+            if (t >= 1.3) {
+                for (var i = 0; i < 3; i++) {
+                    nodeOpacity[i] = lerp(0, 1, (t - 1.3 - i * 0.15) / 0.3);
+                }
+            }
+
+            // === PHASE 3: 3s–4.5s — center reveals + status text ===
+            if (t >= 2.8) {
+                centerOp = lerp(0, 1, (t - 2.8) / 0.4);
+                var s = 0.3 + 0.7 * ease(Math.min((t - 2.8) / 0.5, 1));
+                // Pulse: scale oscillation after reveal
+                if (t > 3.3) {
+                    var pulse = Math.sin((t - 3.3) * 3.5) * 0.08;
+                    s = 1.0 + pulse;
+                }
+                centerScale = s;
+            }
+            if (t >= 3.0) {
+                statusOp = lerp(0, 1, (t - 3.0) / 0.3);
+            }
+
+            // === PHASE 4: 4.5s–6s — morph out, reveal hero ===
+            if (t >= 4.5 && !done) {
+                done = true;
+                // Fade status text out
+                status.style.transition = 'opacity 0.4s ease';
+                status.style.opacity = '0';
+                // Collapse arcs + nodes toward center
+                orbitWrap.style.transition = 'transform 1s cubic-bezier(.25,.46,.45,.94), opacity 1s ease';
+                orbitWrap.style.transform = 'scale(0.15)';
+                orbitWrap.style.opacity = '0';
+                // Show splash title briefly during morph
+                title.style.transition = 'opacity 0.5s ease, font-size 0.5s ease';
+                title.style.opacity = '1';
+                title.style.fontSize = '36px';
+                // Fade particles
+                for (var i = 0; i < particles.length; i++) {
+                    particles[i].style.transition = 'opacity 0.8s ease';
+                    particles[i].style.opacity = '0';
+                }
+                // After collapse, morph splash out and reveal main content
+                setTimeout(function() {
+                    spl.classList.add('spl-morph');
+                    document.body.classList.remove('splash-active');
+                }, 800);
+                // Clean up splash from DOM after transition
+                setTimeout(function() {
+                    if (spl.parentNode) spl.remove();
+                }, 2200);
+            }
+
+            // === RENDER ===
+            spl.style.opacity = Math.min(splashOp, 1);
+
+            // Draw arcs
+            for (var i = 0; i < 3; i++) {
+                var offset = arcDash[i] * (1 - Math.min(arcProgress[i], 1));
+                arcs[i].setAttribute('stroke-dashoffset', offset);
+            }
+
+            // Position particles with drift
+            for (var i = 0; i < particles.length; i++) {
+                var ps = particleStates[i];
+                var drift = Math.sin(t * 0.5 + ps.phase);
+                particles[i].style.opacity = Math.min(ps.op, 1);
+                particles[i].style.transform = 'translate(' + (ps.dx * drift).toFixed(1) + 'px,' + (ps.dy * drift).toFixed(1) + 'px)';
+            }
+
+            // Orbit nodes
+            if (t >= 1.3) {
+                for (var i = 0; i < 3; i++) {
+                    var elapsed = Math.max(t - 1.3 - i * 0.15, 0);
+                    var angle = orbitAngle[i] + elapsed * orbitSpeed[i];
+                    var r = orbitR[i] * (300 / 300); // scale factor if needed
+                    var x = Math.cos(angle) * r;
+                    var y = Math.sin(angle) * r;
+                    nodes[i].style.opacity = Math.min(nodeOpacity[i], 1);
+                    nodes[i].style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+                }
+            }
+
+            // Center icon
+            center.style.opacity = Math.min(centerOp, 1);
+            center.style.transform = 'translate(-50%,-50%) scale(' + centerScale.toFixed(3) + ')';
+            if (centerOp > 0.5) {
+                var glow = 20 + centerOp * 30;
+                center.style.boxShadow = '0 0 ' + glow.toFixed(0) + 'px rgba(124,58,237,0.3), 0 0 ' + (glow * 2).toFixed(0) + 'px rgba(124,58,237,0.1)';
+            }
+
+            // Status text
+            status.style.opacity = Math.min(statusOp, 1);
+
+            if (t < 7) {
+                rafId = requestAnimationFrame(tick);
+            }
+        }
+
+        rafId = requestAnimationFrame(tick);
+    })();
+    </script>
+
+    <!-- Atmospheric Background -->
+    <div class="bg-atmosphere"></div>
+    <div class="grid-pattern"></div>
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
 
-    <!-- Navigation -->
+    <!-- ==================== NAVBAR ==================== -->
     <nav class="nav-glass sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div
-                    class="logo-icon p-2 rounded-xl text-white shadow-lg shadow-indigo-200/40 dark:shadow-indigo-900/30">
-                    <i data-lucide="trending-up" size="20"></i>
+                <div class="logo-icon p-2 rounded-xl text-white shadow-lg shadow-purple-900/30">
+                    <i data-lucide="brain" size="20"></i>
                 </div>
-                <span class="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
+                <span class="font-bold text-lg tracking-tight text-white">
                     AI Resume <span class="gradient-text">Analyzer</span>
                 </span>
             </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#hero-section" class="text-sm text-[#94A3B8] hover:text-white transition-colors">Home</a>
+                <a href="#input-section" class="text-sm text-[#94A3B8] hover:text-white transition-colors">Analyze</a>
+                <a href="#footer" class="text-sm text-[#94A3B8] hover:text-white transition-colors">Contact</a>
+            </div>
             <div class="flex items-center space-x-3">
                 <button id="theme-toggle"
-                    class="p-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all focus:outline-none">
+                    class="p-2.5 rounded-xl text-[#94A3B8] hover:text-white hover:bg-white/5 transition-all focus:outline-none"
+                    style="display:none;">
                     <i data-lucide="moon" class="dark:hidden"></i>
                     <i data-lucide="sun" class="hidden dark:block"></i>
                 </button>
-                <button onclick="window.location.reload()"
-                    class="p-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all focus:outline-none">
-                    <i data-lucide="refresh-cw" size="18"></i>
-                </button>
+                <a href="#input-section"
+                    class="btn-primary px-5 py-2 text-white text-sm font-semibold rounded-[10px] flex items-center space-x-2 no-underline">
+                    <span>Get Started</span>
+                    <i data-lucide="arrow-right" size="16"></i>
+                </a>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-4 py-16">
+    <main class="max-w-6xl mx-auto px-6">
 
-        <!-- Hero Section -->
-        <div id="hero-section" class="text-center mb-14 space-y-5">
-            <div class="animate-in">
-                <span
-                    class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-indigo-100/70 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-800/50 mb-4">
-                    <i data-lucide="sparkles" class="mr-1.5 w-3.5 h-3.5"></i>
-                    AI-Powered Career Intelligence
-                </span>
-            </div>
-            <h1
-                class="animate-in delay-1 text-4xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                Optimize Your Resume for<br>
-                <span class="gradient-text">Any Role</span>
-            </h1>
-            <p
-                class="animate-in delay-2 text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                Upload your resume and select your target role to identify skill gaps,
-                get expert career feedback, and receive actionable recommendations.
-            </p>
-        </div>
+        <!-- ==================== HERO SECTION ==================== -->
+        <section id="hero-section" class="py-[120px] pb-16">
+            <div class="glass rounded-[24px] p-8 md:p-14" style="box-shadow: 0 10px 40px rgba(0,0,0,0.35);">
+                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                    <!-- Left: Text -->
+                    <div class="flex-1 space-y-6 text-center lg:text-left">
+                        <div class="animate-in">
+                            <span
+                                class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest text-[#A78BFA] border border-[rgba(124,58,237,0.25)] bg-[rgba(124,58,237,0.08)]">
+                                <i data-lucide="sparkles" class="mr-1.5 w-3.5 h-3.5"></i>
+                                AI-Powered Career Intelligence
+                            </span>
+                        </div>
+                        <h1 class="animate-in delay-1 text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-white tracking-tight leading-[1.15]">
+                            AI Resume Intelligence<br>for <span class="gradient-text">Modern Developers</span>
+                        </h1>
+                        <p class="animate-in delay-2 text-base md:text-lg text-[#94A3B8] max-w-xl leading-relaxed">
+                            Analyze your resume, discover skill gaps, and receive personalized learning paths powered by AI.
+                        </p>
+                        <div class="animate-in delay-3 flex flex-col sm:flex-row items-center gap-4 lg:justify-start justify-center">
+                            <a href="#input-section"
+                                class="btn-primary px-8 py-3.5 text-white font-semibold rounded-[10px] flex items-center space-x-2.5 text-base no-underline">
+                                <span>Analyze My Resume</span>
+                                <i data-lucide="arrow-right" size="18"></i>
+                            </a>
+                            <a href="#footer"
+                                class="btn-secondary px-6 py-3.5 text-[#94A3B8] font-semibold rounded-[10px] flex items-center space-x-2 text-sm no-underline">
+                                <span>Learn More</span>
+                            </a>
+                        </div>
+                    </div>
 
-        <!-- Input Section -->
-        <div id="input-section" class="max-w-2xl mx-auto glass-card rounded-3xl overflow-hidden animate-in delay-3">
-            <div class="p-8 md:p-10 space-y-8">
-                <!-- Role Selection -->
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2.5 tracking-wide">
-                        <i data-lucide="briefcase" class="inline-block w-4 h-4 mr-1 -mt-0.5"></i>
-                        Target Career Role
-                    </label>
-                    <div class="relative">
-                        <select id="role-select"
-                            class="select-premium w-full pl-4 pr-12 py-4 border border-slate-200/60 dark:border-slate-700/60 text-slate-900 dark:text-slate-100 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 appearance-none outline-none cursor-pointer text-sm font-medium">
-                            <option value="" disabled selected>Select a role</option>
-                            <option value="backend">Backend Developer</option>
-                            <option value="frontend">Frontend Developer</option>
-                            <option value="fullstack">Fullstack Developer</option>
-                            <option value="data_science">Data Scientist</option>
-                            <option value="devops">DevOps Engineer</option>
-                        </select>
-                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                            <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5"></i>
+                    <!-- Right: AI Graphic -->
+                    <div class="flex-1 flex justify-center animate-in delay-4">
+                        <div class="hero-graphic">
+                            <div class="hero-graphic-inner">
+                                <div class="hero-ring hero-ring-1"></div>
+                                <div class="hero-ring hero-ring-2"></div>
+                                <div class="hero-ring hero-ring-3"></div>
+                                <div class="hero-dot hero-dot-1"></div>
+                                <div class="hero-dot hero-dot-2"></div>
+                                <div class="hero-dot hero-dot-3"></div>
+                                <div class="hero-center-icon">
+                                    <i data-lucide="brain" class="text-[#7C3AED]" size="48"></i>
+                                </div>
+                                <!-- Floating mini cards — radial layout -->
+                                <div class="hero-float-card hero-float-card-1 hidden md:flex items-center space-x-2">
+                                    <div class="w-2.5 h-2.5 rounded-full" style="background:#10B981;box-shadow:0 0 8px rgba(16,185,129,0.5)"></div>
+                                    <span class="text-xs font-semibold" style="color:#10B981">Skills Matched</span>
+                                </div>
+                                <div class="hero-float-card hero-float-card-2 hidden md:flex items-center space-x-2">
+                                    <div class="w-2.5 h-2.5 rounded-full" style="background:#8B5CF6;box-shadow:0 0 8px rgba(139,92,246,0.5)"></div>
+                                    <span class="text-xs font-semibold" style="color:#8B5CF6">AI Analysis</span>
+                                </div>
+                                <div class="hero-float-card hero-float-card-3 hidden md:flex items-center space-x-2">
+                                    <div class="w-2.5 h-2.5 rounded-full" style="background:#38BDF8;box-shadow:0 0 8px rgba(56,189,248,0.5)"></div>
+                                    <span class="text-xs font-semibold" style="color:#38BDF8">Learning Path</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Upload Area -->
-                <div id="drop-zone" class="upload-zone group rounded-2xl p-10 md:p-12 text-center cursor-pointer">
-                    <input type="file" id="resume-upload" class="hidden" accept=".pdf" />
-                    <div class="flex flex-col items-center">
-                        <div id="upload-icon-container"
-                            class="icon-wrap p-5 rounded-2xl mb-5 bg-slate-100/80 dark:bg-slate-700/50 text-slate-400 dark:text-slate-500">
-                            <i data-lucide="upload" id="main-icon" size="36"></i>
+        <!-- ==================== RESUME UPLOAD SECTION ==================== -->
+        <section id="input-section" class="max-w-2xl mx-auto pb-[120px] animate-in delay-3">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Upload Your Resume</h2>
+                <p class="text-[#94A3B8] text-sm">Select your target role and upload your PDF to get started</p>
+            </div>
+            <div class="glass-card overflow-hidden" style="border-radius:24px;">
+                <div class="p-8 md:p-10 space-y-8">
+                    <!-- Role Selection -->
+                    <div>
+                        <label class="block text-sm font-semibold text-[#E5E7EB] mb-2.5 tracking-wide">
+                            <i data-lucide="briefcase" class="inline-block w-4 h-4 mr-1.5 -mt-0.5 text-[#7C3AED]"></i>
+                            Target Career Role
+                        </label>
+                        <div class="relative">
+                            <select id="role-select"
+                                class="select-premium w-full pl-4 pr-12 py-4 border border-[rgba(255,255,255,0.08)] text-[#E5E7EB] rounded-[10px] focus:ring-2 focus:ring-[rgba(124,58,237,0.4)] appearance-none outline-none cursor-pointer text-sm font-medium">
+                                <option value="" disabled selected>Select a role</option>
+                                <option value="backend">Backend Developer</option>
+                                <option value="frontend">Frontend Developer</option>
+                                <option value="fullstack">Fullstack Developer</option>
+                                <option value="data_science">Data Scientist</option>
+                                <option value="devops">DevOps Engineer</option>
+                            </select>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <i data-lucide="chevron-down" class="text-[#94A3B8] w-5 h-5"></i>
+                            </div>
                         </div>
-                        <h3 id="file-name-display" class="text-lg font-bold text-slate-900 dark:text-white">Choose a PDF
-                            resume</h3>
-                        <p id="file-size-display" class="text-slate-400 dark:text-slate-500 text-sm mt-1.5">Drag and
-                            drop or click to browse</p>
                     </div>
+
+                    <!-- Upload Area -->
+                    <div id="drop-zone" class="upload-zone group p-10 md:p-14 text-center cursor-pointer">
+                        <input type="file" id="resume-upload" class="hidden" accept=".pdf" />
+                        <div class="flex flex-col items-center">
+                            <div id="upload-icon-container"
+                                class="icon-wrap p-5 rounded-2xl mb-5 bg-[rgba(124,58,237,0.1)] text-[#94A3B8]">
+                                <i data-lucide="upload" id="main-icon" size="36"></i>
+                            </div>
+                            <h3 id="file-name-display" class="text-lg font-bold text-white">Drag & Drop Resume</h3>
+                            <p id="file-size-display" class="text-[#94A3B8] text-sm mt-1.5">or Upload PDF</p>
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="error-message"
+                        class="hidden flex items-center space-x-3 text-rose-400 bg-rose-900/20 p-4 rounded-[10px] text-sm border border-rose-800/30 backdrop-blur-sm">
+                        <i data-lucide="alert-circle" size="18"></i>
+                        <span id="error-text"></span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button id="analyze-btn" disabled
+                        class="btn-primary w-full py-4 text-white font-bold rounded-[10px] flex items-center justify-center space-x-2.5 cursor-pointer disabled:cursor-not-allowed text-base">
+                        <span>Analyze Resume</span>
+                        <i data-lucide="arrow-right" size="20"></i>
+                    </button>
                 </div>
-
-                <!-- Error Message -->
-                <div id="error-message"
-                    class="hidden flex items-center space-x-3 text-rose-600 bg-rose-50/80 dark:bg-rose-900/20 p-4 rounded-2xl text-sm border border-rose-200/50 dark:border-rose-900/40 backdrop-blur-sm">
-                    <i data-lucide="alert-circle" size="18"></i>
-                    <span id="error-text"></span>
+                <div class="px-8 py-4 border-t border-[rgba(255,255,255,0.06)]" style="background:rgba(255,255,255,0.02);">
+                    <p class="text-[10px] text-center text-[#475569] uppercase tracking-[0.25em] font-bold">
+                        Privacy Guaranteed &bull; AI Driven &bull; PDF Only
+                    </p>
                 </div>
-
-                <!-- Submit Button -->
-                <button id="analyze-btn" disabled
-                    class="btn-primary w-full py-4 text-white font-bold rounded-2xl flex items-center justify-center space-x-2.5 cursor-pointer disabled:cursor-not-allowed text-base">
-                    <span>Analyze Resume</span>
-                    <i data-lucide="arrow-right" size="20"></i>
-                </button>
             </div>
-            <div
-                class="bg-slate-50/50 dark:bg-slate-900/30 px-8 py-4 border-t border-slate-100/50 dark:border-slate-700/30 backdrop-blur-sm">
-                <p
-                    class="text-[10px] text-center text-slate-400 dark:text-slate-600 uppercase tracking-[0.25em] font-bold">
-                    Privacy Guaranteed • AI Driven • PDF Only
-                </p>
-            </div>
-        </div>
+        </section>
 
-        <!-- Loading State -->
-        <div id="loader" class="hidden flex flex-col items-center justify-center py-24 space-y-8">
+        <!-- ==================== LOADING STATE ==================== -->
+        <div id="loader" class="hidden flex flex-col items-center justify-center py-[120px] space-y-8">
             <div class="relative">
                 <div class="spinner-ring w-20 h-20 rounded-full"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <i data-lucide="brain" class="text-indigo-600 dark:text-indigo-400" size="28"></i>
+                    <i data-lucide="brain" class="text-[#7C3AED]" size="28"></i>
                 </div>
             </div>
             <div class="text-center space-y-3">
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Analyzing Resume<span
-                        class="loading-dots"></span></h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto">Our AI is extracting skills and
-                    calculating gaps.</p>
+                <h3 class="text-xl font-bold text-white">Analyzing Resume<span class="loading-dots"></span></h3>
+                <p class="text-[#94A3B8] text-sm max-w-xs mx-auto">Our AI is extracting skills and calculating gaps.</p>
                 <div class="flex items-center justify-center space-x-6 pt-4">
-                    <div
-                        class="progress-step active flex items-center space-x-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                    <div class="progress-step active flex items-center space-x-1.5 text-xs font-semibold text-[#7C3AED]">
                         <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i><span>Uploading</span>
                     </div>
-                    <div class="w-6 h-px bg-slate-300 dark:bg-slate-700"></div>
-                    <div
-                        class="progress-step flex items-center space-x-1.5 text-xs font-semibold text-slate-400 dark:text-slate-500">
+                    <div class="w-6 h-px bg-[rgba(255,255,255,0.08)]"></div>
+                    <div class="progress-step flex items-center space-x-1.5 text-xs font-semibold text-[#475569]">
                         <i data-lucide="file-scan" class="w-3.5 h-3.5"></i><span>Parsing</span>
                     </div>
-                    <div class="w-6 h-px bg-slate-300 dark:bg-slate-700"></div>
-                    <div
-                        class="progress-step flex items-center space-x-1.5 text-xs font-semibold text-slate-400 dark:text-slate-500">
+                    <div class="w-6 h-px bg-[rgba(255,255,255,0.08)]"></div>
+                    <div class="progress-step flex items-center space-x-1.5 text-xs font-semibold text-[#475569]">
                         <i data-lucide="sparkles" class="w-3.5 h-3.5"></i><span>Analyzing</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Results Dashboard -->
-        <div id="results-dashboard" class="hidden">
-            <!-- Summary Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="glass-card p-6 rounded-2xl flex items-center space-x-4 animate-in">
-                    <div class="stat-icon-indigo p-3.5 rounded-xl text-indigo-600 dark:text-indigo-400">
-                        <i data-lucide="award" size="24"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Match
-                            Score</p>
-                        <p id="stat-score" class="text-3xl font-black text-slate-900 dark:text-white">0%</p>
-                    </div>
+        <!-- ==================== RESULTS DASHBOARD ==================== -->
+        <div id="results-dashboard" class="hidden py-[120px] pt-16 space-y-[48px]">
+
+            <!-- Analysis Dashboard: Stats -->
+            <div>
+                <div class="flex items-center space-x-3 mb-8 animate-in">
+                    <div class="w-1 h-6 rounded-full bg-gradient-to-b from-[#7C3AED] to-[#22D3EE]"></div>
+                    <h2 class="text-2xl font-bold text-white">Analysis Dashboard</h2>
                 </div>
-                <div class="glass-card p-6 rounded-2xl flex items-center space-x-4 animate-in delay-1">
-                    <div class="stat-icon-emerald p-3.5 rounded-xl text-emerald-600 dark:text-emerald-400">
-                        <i data-lucide="check-circle-2" size="24"></i>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card p-6 flex items-center space-x-4 animate-in">
+                        <div class="stat-icon-indigo p-3.5 rounded-xl text-[#A78BFA]">
+                            <i data-lucide="award" size="24"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider mb-1">Match Score</p>
+                            <p id="stat-score" class="text-3xl font-bold text-white">0%</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Matched
-                            Skills</p>
-                        <p id="stat-matched" class="text-3xl font-black text-slate-900 dark:text-white">0</p>
+                    <div class="glass-card p-6 flex items-center space-x-4 animate-in delay-1">
+                        <div class="stat-icon-emerald p-3.5 rounded-xl text-emerald-400">
+                            <i data-lucide="check-circle-2" size="24"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider mb-1">Matched Skills</p>
+                            <p id="stat-matched" class="text-3xl font-bold text-white">0</p>
+                        </div>
                     </div>
-                </div>
-                <div class="glass-card p-6 rounded-2xl flex items-center space-x-4 animate-in delay-2">
-                    <div class="stat-icon-rose p-3.5 rounded-xl text-rose-600 dark:text-rose-400">
-                        <i data-lucide="x-circle" size="24"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Skill
-                            Gaps</p>
-                        <p id="stat-missing" class="text-3xl font-black text-slate-900 dark:text-white">0</p>
+                    <div class="glass-card p-6 flex items-center space-x-4 animate-in delay-2">
+                        <div class="stat-icon-rose p-3.5 rounded-xl text-rose-400">
+                            <i data-lucide="x-circle" size="24"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider mb-1">Skill Gaps</p>
+                            <p id="stat-missing" class="text-3xl font-bold text-white">0</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Expert Feedback + AI Insight -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Left Content -->
                 <div class="lg:col-span-2 space-y-8">
-                    <div class="glass-card p-8 md:p-10 rounded-3xl animate-in delay-3">
+                    <!-- Expert Feedback -->
+                    <div class="glass-card p-8 md:p-10 animate-in delay-3" style="border-radius:24px;">
                         <div class="flex items-center space-x-3 mb-5">
-                            <div class="p-2 rounded-lg bg-indigo-100/70 dark:bg-indigo-900/30">
-                                <i data-lucide="message-square"
-                                    class="text-indigo-600 dark:text-indigo-400 w-5 h-5"></i>
+                            <div class="p-2 rounded-lg bg-[rgba(124,58,237,0.15)]">
+                                <i data-lucide="message-square" class="text-[#A78BFA] w-5 h-5"></i>
                             </div>
-                            <h2 class="text-xl font-extrabold dark:text-white">Expert Feedback</h2>
+                            <h2 class="text-xl font-bold text-white">Expert Feedback</h2>
                             <span id="rating-badge"
-                                class="badge-gradient px-3 py-1 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-full">Good</span>
+                                class="badge-gradient px-3 py-1 text-[#C4B5FD] text-xs font-bold rounded-full">Good</span>
                         </div>
-                        <p id="career-feedback-text" class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                        </p>
+                        <p id="career-feedback-text" class="text-[#94A3B8] leading-relaxed text-base"></p>
                     </div>
 
-                    <div class="glass-card rounded-3xl overflow-hidden animate-in delay-4">
-                        <div
-                            class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200/30 dark:divide-slate-700/30">
+                    <!-- Skill Gap Insights: Matched & Missing -->
+                    <div class="glass-card overflow-hidden animate-in delay-4" style="border-radius:24px;">
+                        <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[rgba(255,255,255,0.06)]">
                             <div class="p-8">
                                 <div class="flex items-center space-x-2 mb-6">
-                                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                                    <h3
-                                        class="text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em]">
-                                        Matched Competencies</h3>
+                                    <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                                    <h3 class="text-xs font-bold text-[#94A3B8] uppercase tracking-[0.15em]">Matched Competencies</h3>
                                 </div>
                                 <div id="matched-skills-container" class="flex flex-wrap"></div>
                             </div>
                             <div class="p-8">
                                 <div class="flex items-center space-x-2 mb-6">
-                                    <div class="w-2 h-2 rounded-full bg-rose-500"></div>
-                                    <h3
-                                        class="text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em]">
-                                        Missing Requirements</h3>
+                                    <div class="w-2 h-2 rounded-full bg-rose-400"></div>
+                                    <h3 class="text-xs font-bold text-[#94A3B8] uppercase tracking-[0.15em]">Missing Requirements</h3>
                                 </div>
                                 <div id="missing-skills-container" class="flex flex-wrap"></div>
                             </div>
@@ -783,28 +1148,30 @@
                     </div>
                 </div>
 
-                <!-- Right Sidebar -->
+                <!-- Right Sidebar: Next Steps + Learning Paths -->
                 <div class="space-y-8">
-                    <div
-                        class="next-steps-card text-white p-8 rounded-3xl shadow-xl shadow-indigo-200/30 dark:shadow-indigo-900/20 animate-in delay-5">
-                        <h3 class="text-lg font-extrabold mb-6 flex items-center relative z-10">
+                    <!-- Next Steps -->
+                    <div class="next-steps-card text-white p-8 rounded-[24px] animate-in delay-5"
+                         style="box-shadow: 0 10px 40px rgba(0,0,0,0.35);">
+                        <h3 class="text-lg font-bold mb-6 flex items-center relative z-10">
                             <i data-lucide="trending-up" class="mr-2.5" size="20"></i>
                             Next Steps
                         </h3>
                         <ul id="recommendations-list" class="space-y-4 relative z-10"></ul>
                     </div>
 
-                    <div id="resources-card" class="hidden glass-card p-8 rounded-3xl animate-in delay-6">
-                        <h3 class="text-lg font-extrabold mb-6 flex items-center">
-                            <i data-lucide="book-open" class="mr-2.5 text-indigo-600 dark:text-indigo-400"
-                                size="20"></i>
+                    <!-- Learning Paths -->
+                    <div id="resources-card" class="hidden glass-card p-8 animate-in delay-6" style="border-radius:24px;">
+                        <h3 class="text-lg font-bold mb-6 flex items-center text-white">
+                            <i data-lucide="book-open" class="mr-2.5 text-[#22D3EE]" size="20"></i>
                             Learning Paths
                         </h3>
                         <div id="resources-container" class="space-y-3"></div>
                     </div>
 
+                    <!-- New Analysis Button -->
                     <button onclick="window.location.reload()"
-                        class="btn-secondary w-full py-4 text-slate-500 dark:text-slate-400 font-bold rounded-2xl focus:outline-none">
+                        class="btn-secondary w-full py-4 text-[#94A3B8] font-bold rounded-[10px] focus:outline-none">
                         Start New Analysis
                     </button>
                 </div>
@@ -812,36 +1179,42 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="pt-0 pb-10">
+    <!-- ==================== FOOTER ==================== -->
+    <footer id="footer" class="pt-0 pb-10" style="margin-top: 40px;">
         <div class="footer-gradient mb-10"></div>
-        <div class="max-w-5xl mx-auto px-4">
-            <div
-                class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 text-center md:text-left">
-                <div>
-                    <p class="text-slate-900 dark:text-white font-extrabold text-lg mb-1">
-                        AI Resume <span class="gradient-text">Analyzer</span>
-                    </p>
-                    <p class="text-slate-400 dark:text-slate-600 text-sm">
-                        &copy; 2026 AI Resume Analyzer. Built by Jyotirmoy Laha.
-                    </p>
-                </div>
-                <div class="flex flex-col items-center md:items-end space-y-3">
-                    <p class="text-[10px] uppercase tracking-[0.25em] font-bold text-slate-400 dark:text-slate-600">
-                        Contact Me</p>
-                    <div class="flex items-center space-x-5">
-                        <a href="https://www.linkedin.com/in/jyotirmoy-laha-416818319/" target="_blank" title="LinkedIn"
-                            class="social-icon text-slate-400 transition-colors">
-                            <i data-lucide="linkedin" size="20"></i>
-                        </a>
-                        <a href="https://github.com/JyotirmoyLaha" target="_blank" title="GitHub"
-                            class="social-icon text-slate-400 transition-colors">
-                            <i data-lucide="github" size="20"></i>
-                        </a>
-                        <a href="mailto:jyotirmoy713128@gmail.com" title="Email"
-                            class="social-icon text-slate-400 transition-colors">
-                            <i data-lucide="mail" size="20"></i>
-                        </a>
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="glass rounded-[24px] px-8 py-8 md:px-12 md:py-10" style="box-shadow: 0 10px 40px rgba(0,0,0,0.35);">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <!-- Brand -->
+                    <div class="flex flex-col items-center md:items-start gap-2">
+                        <div class="flex items-center space-x-3">
+                            <div class="logo-icon p-2 rounded-xl text-white">
+                                <i data-lucide="brain" size="18"></i>
+                            </div>
+                            <span class="text-white font-bold text-lg">AI Resume <span class="gradient-text">Analyzer</span></span>
+                        </div>
+                        <p class="text-[#94A3B8] text-sm leading-relaxed max-w-sm text-center md:text-left">
+                            AI powered platform that analyzes resumes and detects skill gaps for career growth.
+                        </p>
+                        <p class="text-[#475569] text-xs">
+                            &copy; 2026 AI Resume Analyzer. Built by Jyotirmoy Laha.
+                        </p>
+                    </div>
+
+                    <!-- Contact Me -->
+                    <div class="flex flex-col items-center md:items-end gap-3">
+                        <h4 class="text-xs font-bold text-[#E5E7EB] uppercase tracking-[0.15em]">Contact Me</h4>
+                        <div class="flex items-center space-x-4">
+                            <a href="https://github.com/JyotirmoyLaha" target="_blank" title="Github" class="social-icon">
+                                <i data-lucide="github" size="20"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/jyotirmoy-laha-416818319/" target="_blank" title="LinkedIn" class="social-icon">
+                                <i data-lucide="linkedin" size="20"></i>
+                            </a>
+                            <a href="mailto:jyotirmoy713128@gmail.com" title="Email" class="social-icon">
+                                <i data-lucide="mail" size="20"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1029,21 +1402,21 @@
 
             const matchedContainer = document.getElementById('matched-skills-container');
             matchedContainer.innerHTML = data.matched_skills.map(s => `
-                <span class="skill-tag inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold mr-2 mb-2.5 bg-emerald-50/80 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40 backdrop-blur-sm">
+                <span class="skill-tag inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold mr-2 mb-2.5 bg-emerald-900/25 text-emerald-400 border border-emerald-700/30 backdrop-blur-sm" style="border-radius:999px; padding:6px 14px;">
                     <i data-lucide="check-circle-2" class="mr-1.5 w-3 h-3"></i> ${s}
                 </span>
-            `).join('') || '<p class="text-slate-400 text-sm italic">No matching skills detected.</p>';
+            `).join('') || '<p class="text-[#94A3B8] text-sm italic">No matching skills detected.</p>';
 
             const missingContainer = document.getElementById('missing-skills-container');
             missingContainer.innerHTML = data.missing_skills.map(s => `
-                <span class="skill-tag inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold mr-2 mb-2.5 bg-rose-50/80 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400 border border-rose-200/50 dark:border-rose-800/40 backdrop-blur-sm">
+                <span class="skill-tag inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold mr-2 mb-2.5 bg-rose-900/25 text-rose-400 border border-rose-700/30 backdrop-blur-sm" style="border-radius:999px; padding:6px 14px;">
                     <i data-lucide="x-circle" class="mr-1.5 w-3 h-3"></i> ${s}
                 </span>
-            `).join('') || '<p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium">Perfect match!</p>';
+            `).join('') || '<p class="text-emerald-400 text-sm font-medium">Perfect match!</p>';
 
             document.getElementById('recommendations-list').innerHTML = data.recommendations.map(rec => `
-                <li class="flex items-start space-x-3 text-sm text-indigo-100 dark:text-indigo-200">
-                    <div class="mt-0.5 bg-white/20 p-1 rounded-md flex-shrink-0"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-white"></i></div>
+                <li class="flex items-start space-x-3 text-sm text-indigo-100">
+                    <div class="mt-0.5 bg-white/15 p-1 rounded-md flex-shrink-0"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-white"></i></div>
                     <span>${rec}</span>
                 </li>
             `).join('');
@@ -1053,9 +1426,9 @@
             if (data.learning_resources && Object.keys(data.learning_resources).length > 0) {
                 resourcesCard.classList.remove('hidden');
                 resourcesContainer.innerHTML = Object.entries(data.learning_resources).map(([skill, url]) => `
-                    <a href="${url}" target="_blank" class="resource-link flex items-center justify-between p-3.5 rounded-xl border border-slate-200/40 dark:border-slate-700/40 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 group backdrop-blur-sm">
-                        <span class="font-bold text-slate-700 dark:text-slate-300 capitalize text-sm">${skill}</span>
-                        <i data-lucide="arrow-right" class="arrow-icon text-slate-300 dark:text-slate-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 w-4 h-4"></i>
+                    <a href="${url}" target="_blank" class="resource-link flex items-center justify-between p-3.5 rounded-xl border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(124,58,237,0.06)] group backdrop-blur-sm">
+                        <span class="font-semibold text-[#E5E7EB] capitalize text-sm">${skill}</span>
+                        <i data-lucide="arrow-right" class="arrow-icon text-[#475569] group-hover:text-[#A78BFA] w-4 h-4"></i>
                     </a>
                 `).join('');
             } else {

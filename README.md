@@ -1,65 +1,80 @@
 # 🚀 AI Resume Analyzer & Skill Gap Finder
 
-A modern, AI-powered web application that analyzes resumes, extracts relevant skills, identifies skill gaps for a selected career role, and provides actionable career recommendations — all through a **stunning, premium interface** with glassmorphism and smooth animations.
+A modern, AI-powered web application that analyzes resumes, extracts relevant skills, identifies skill gaps for a selected career role, and provides actionable career recommendations — all through a **stunning, premium dark-mode interface** with glassmorphism, floating gradient orbs, and smooth animations.
 
-Built with **Python (FastAPI)** on the backend and a **TailwindCSS-based frontend**, this project focuses on **real-world resume analysis logic**, not hype-driven AI buzzwords.
+Built with **Python (FastAPI)** on the backend and a **TailwindCSS + custom CSS** frontend, this project focuses on **real-world resume analysis logic**, not hype-driven AI buzzwords.
 
 ---
 
 ## ✨ Key Features
 
-- 📄 **PDF Resume Upload**
-- 🎯 **Role-Based Skill Analysis**
-- 🧠 **Rule-Based AI (NLP + Regex)**
-- 📊 **Match Score & Skill Gap Metrics**
-- 🚨 **Priority-Based Recommendations**
-- 📚 **Learning Resources for Missing Skills**
-- 🌗 **Dark / Light Mode Toggle**
-- ⚡ **Modern, Responsive UI**
-- 🎨 **Glassmorphism Cards** with frosted-glass blur
-- ✨ **Animated Gradient Background** with floating orbs
-- 🎬 **Staggered Entrance Animations** on page load
-- 🔢 **Animated Stat Counters** in results dashboard
-- 💫 **Micro-Interactions** — hover lifts, glow effects, shimmer buttons
-- 🔒 **Privacy-Friendly (No data stored)**
+- 📄 **PDF Resume Upload** — drag-and-drop or click to browse
+- 🎯 **Role-Based Skill Analysis** — select your target career role
+- 🧠 **Rule-Based AI (NLP + Regex)** — no external AI API needed
+- 📊 **Match Score & Skill Gap Metrics** — animated stat counters
+- 🚨 **Priority-Based Recommendations** — actionable next steps
+- 📚 **Learning Resources for Missing Skills** — curated links
+- ⚡ **Fully Responsive UI** — mobile-optimized with hamburger nav
+- 🎨 **Glassmorphism Cards** — frosted-glass blur with border glow
+- ✨ **Animated Gradient Background** — floating orbs & grid pattern
+- 🎬 **Staggered Entrance Animations** — sequential slide-up reveals
+- 💫 **Micro-Interactions** — hover lifts, shimmer buttons, social icon effects
+- 🔒 **Privacy-Friendly** — no data stored on server
+
+---
+
+## 📂 Project Structure
+
+```
+Frontend/
+├── index.html      # HTML structure & layout (semantic markup only)
+├── styles.css      # All custom CSS — animations, glassmorphism, responsive
+├── script.js       # All application logic — upload, API calls, rendering
+└── README.md       # This file
+```
+
+> **Note:** The frontend was originally a single `index.html` with inline `<style>` and `<script>` blocks. The code has been separated into dedicated files for better maintainability, without changing any logic or visuals.
 
 ---
 
 ## 🧠 How It Works
 
-1. User uploads a **PDF resume**
-2. Selects a **target career role**
-3. Backend:
-   - Extracts text from resume
-   - Identifies skills using regex-based NLP
+1. User uploads a **PDF resume** (drag-and-drop or click)
+2. Selects a **target career role** from the dropdown
+3. Backend processes the resume:
+   - Extracts text using `pdfplumber`
+   - Identifies skills with regex-based NLP
    - Compares skills against role requirements
    - Calculates match percentage
    - Generates recommendations & learning links
 4. Frontend displays:
-   - Match score
-   - Matched vs missing skills
-   - Career feedback
-   - Next learning steps
+   - Animated match score, matched/missing skill counts
+   - Matched vs. missing skills as colour-coded tags
+   - Expert feedback & career rating
+   - Next steps checklist
+   - Learning path resources
 
 ---
 
 ## 🏗️ Tech Stack
 
 ### 🔙 Backend
-- **Python**
-- **FastAPI**
-- **pdfplumber**
-- **Regex-based NLP**
-- Modular skill analysis engine
+| Technology | Purpose |
+|---|---|
+| **Python** | Core language |
+| **FastAPI** | REST API framework |
+| **pdfplumber** | PDF text extraction |
+| **Regex NLP** | Skill pattern matching |
 
 ### 🎨 Frontend
-- **HTML5**
-- **Tailwind CSS (CDN)**
-- **Vanilla JavaScript**
-- **Lucide Icons**
-- **Custom CSS Animations** (gradient mesh, floating orbs, staggered reveals)
-- **Glassmorphism Design System** (`backdrop-filter: blur`)
-- Dark / Light theme with `localStorage` persistence
+| Technology | Purpose |
+|---|---|
+| **HTML5** | Semantic page structure (`index.html`) |
+| **Tailwind CSS (CDN)** | Utility-first styling framework |
+| **Custom CSS** | Glassmorphism, animations, responsive (`styles.css`) |
+| **Vanilla JavaScript** | Application logic & API integration (`script.js`) |
+| **Lucide Icons** | Icon library (CDN) |
+| **Google Fonts** | Inter & Plus Jakarta Sans typography |
 
 ---
 
@@ -67,16 +82,16 @@ Built with **Python (FastAPI)** on the backend and a **TailwindCSS-based fronten
 
 | Feature | Description |
 |---|---|
-| **Animated Mesh Background** | Slow-shifting gradient with 3 floating colored orbs for depth |
-| **Glassmorphism Cards** | Semi-transparent cards with `backdrop-filter: blur(20px)` and border glow on hover |
-| **Staggered Animations** | Elements fade in sequentially with `slideUp` and delay classes |
-| **Gradient Text** | Accent words use a vibrant `indigo → purple → pink` gradient |
-| **Shimmer Button** | Diagonal light sweep on hover + elevated glow shadow |
-| **Logo Pulse** | Breathing glow ring on the logo icon |
-| **Animated Counters** | Stat numbers count up from 0 to final value over 1.2s |
-| **Progress Steps** | Loading screen shows Uploading → Parsing → Analyzing stages |
-| **Social Icon Hover** | Expanding circle background on social link hover |
-| **Premium Dark Mode** | Deep-space gradients, dimmed orbs, matching glass effects |
+| **Animated Mesh Background** | Slow-shifting gradient with 4 floating coloured orbs |
+| **Glassmorphism Cards** | `backdrop-filter: blur(20px)` + border glow on hover |
+| **Staggered Animations** | Elements fade in with `slideUp` + delay classes |
+| **Gradient Text** | Accent words use `indigo → purple → cyan` gradient |
+| **Shimmer Button** | Diagonal light sweep on hover + elevated glow |
+| **Logo Pulse** | Breathing glow ring on the brand icon |
+| **Animated Counters** | Stats count up from 0 over 1.2s |
+| **Progress Steps** | Loading shows Uploading → Parsing → Analyzing |
+| **Hero Orbital Graphic** | Spinning rings with floating mini-cards |
+| **Social Icon Hover** | Expanding circle background on hover |
 
 ---
 
@@ -88,37 +103,32 @@ Built with **Python (FastAPI)** on the backend and a **TailwindCSS-based fronten
 cd backend
 pip install -r requirements.txt
 uvicorn app:app --reload
-
-Backend will run at:
-
-http://127.0.0.1:8000
-
-API Docs:
-
-http://127.0.0.1:8000/docs
-
 ```
+
+- **Server:** http://127.0.0.1:8000
+- **API Docs:** http://127.0.0.1:8000/docs
+
 ### 2️⃣ Frontend Setup
 
+Simply open `index.html` in your browser (double-click or use a live server extension).
 
-Simply open:
-```
-frontend/index.html
-```
- Make sure the backend is running before clicking Analyze Resume
+> Make sure the backend is running before clicking **Analyze Resume**.
+
 ---
-### 📊 API Endpoint
+
+## 📊 API Endpoint
+
 ```
 POST /analyze
-
-Form Data
-
-resume → PDF file
-
-role → target role (frontend, backend, fullstack, data_science, devops)
-
-include_resources → true / false
 ```
+
+**Form Data:**
+
+| Field | Type | Description |
+|---|---|---|
+| `resume` | File (PDF) | The resume to analyze |
+| `role` | String | Target role (`frontend`, `backend`, `fullstack`, `data_science`, `devops`) |
+| `include_resources` | Boolean | Whether to return learning resource links |
 
 **Response:**
 
@@ -126,14 +136,16 @@ include_resources → true / false
 {
   "match_percentage": 72,
   "rating": "Good ⭐⭐⭐",
-  "matched_skills": ["Python", "Django", ...],
-  "missing_skills": ["Docker", "Kubernetes", ...],
-  "recommendations": ["Learn containerization with Docker", ...],
-  "learning_resources": { "Docker": "https://...", ... }
+  "matched_skills": ["Python", "Django"],
+  "missing_skills": ["Docker", "Kubernetes"],
+  "recommendations": ["Learn containerization with Docker"],
+  "learning_resources": { "Docker": "https://..." }
 }
 ```
 
-### 🎯 Supported Roles
+---
+
+## 🎯 Supported Roles
 
 - Frontend Developer
 - Backend Developer
@@ -141,17 +153,18 @@ include_resources → true / false
 - Data Scientist
 - DevOps Engineer
 
+---
 
-### 🔮 Future Improvements
+## 🔮 Future Improvements
 
 - 📊 Skill radar charts
 - 📄 Resume preview panel
 - 🔐 User authentication
-- 📱 Mobile-optimized layout
+- 📱 Progressive Web App (PWA) support
 
+---
 
-
-### 👨‍💻 Author
+## 👨‍💻 Author
 
 **Jyotirmoy Laha**
 BCA Student | Aspiring Software Engineer

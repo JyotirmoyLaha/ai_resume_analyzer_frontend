@@ -169,6 +169,4 @@ POST /analyze
 **Jyotirmoy Laha**
 BCA Student | Aspiring Software Engineer
 
-🌐 **Live Demo:** [AI Resume Analyzer](https://ai-resume-analyzer-hhhb.onrender.com)
-
-💼 **GitHub:** [JyotirmoyLaha](https://github.com/JyotirmoyLaha)
+🌐 **Live Demo:** [AI Resume Analyzer](https://ai-resume-analyzer-hhhb.onrender.com) 

@@ -1,4 +1,9 @@
-# 🚀 AI Resume Analyzer & Skill Gap Finder
+# 🚀 AI Resume Analyzer & Skill Gap Finder<div align="center">
+  <img src="architecture.svg" alt="Frontend Application Architecture" width="100%">
+</div>
+
+<br>
+<br>
 
 A modern, AI-powered web application that analyzes resumes, extracts relevant skills, identifies skill gaps for a selected career role, and provides actionable career recommendations — all through a **stunning, premium dark-mode interface** with glassmorphism, floating gradient orbs, and smooth animations.
 

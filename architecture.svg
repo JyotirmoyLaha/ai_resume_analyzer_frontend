@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="100%" height="auto" style="background: #0B1120; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', system-ui, sans-serif; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+    <linearGradient id="cyanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22D3EE" />
+      <stop offset="100%" stop-color="#0EA5E9" />
+    </linearGradient>
+    <linearGradient id="borderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(124,58,237,0.3)" />
+      <stop offset="100%" stop-color="rgba(34,211,238,0.1)" />
+    </linearGradient>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    
+    <!-- Filters for glowing effects -->
+    <filter id="purpleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .glow-hover {
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+    }
+    .glow-hover:hover {
+      transform: translateY(-5px);
+      filter: drop-shadow(0 10px 15px rgba(124,58,237,0.25));
+    }
+    .pulse {
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(124,58,237,0.3)); opacity: 0.8; }
+      50% { filter: drop-shadow(0 0 15px rgba(124,58,237,0.6)); opacity: 1; }
+    }
+    .node-text {
+      font-size: 14px;
+      font-weight: 600;
+      fill: #FFFFFF;
+    }
+    .desc-text {
+      font-size: 11px;
+      fill: #94A3B8;
+    }
+    .line-flow {
+      stroke: url(#borderGradient);
+      stroke-dasharray: 8 4;
+      animation: dash 30s linear infinite;
+    }
+    @keyframes dash {
+      to { stroke-dashoffset: -1000; }
+    }
+  </style>
+
+  <!-- Atmospheric Orbs -->
+  <circle cx="150" cy="100" r="120" fill="#7C3AED" opacity="0.08" filter="blur(80px)" />
+  <circle cx="650" cy="300" r="150" fill="#22D3EE" opacity="0.08" filter="blur(90px)" />
+
+  <!-- Background grid pattern -->
+  <path d="M 0,40 L 800,40 M 0,80 L 800,80 M 0,120 L 800,120 M 0,160 L 800,160 M 0,200 L 800,200 M 0,240 L 800,240 M 0,280 L 800,280 M 0,320 L 800,320 M 0,360 L 800,360" stroke="rgba(255,255,255,0.015)" stroke-width="1" />
+  <path d="M 80,0 L 80,400 M 160,0 L 160,400 M 240,0 L 240,400 M 320,0 L 320,400 M 400,0 L 400,400 M 480,0 L 480,400 M 560,0 L 560,400 M 640,0 L 640,400 M 720,0 L 720,400" stroke="rgba(255,255,255,0.015)" stroke-width="1" />
+
+  <!-- Flow Lines -->
+  <path d="M 230,200 L 320,200" stroke-width="2" class="line-flow" />
+  <path d="M 480,200 L 570,200" stroke-width="2" class="line-flow" />
+
+  <!-- TITLE -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="800" fill="#FFFFFF" letter-spacing="2">FRONTEND APPLICATION ARCHITECTURE</text>
+
+  <!-- COLUMN 1: INPUT & UPLOAD -->
+  <g class="glow-hover" transform="translate(0, 0)">
+    <rect x="50" y="80" width="180" height="240" rx="16" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+    
+    <!-- Title -->
+    <rect x="70" y="100" width="140" height="30" rx="6" fill="rgba(124,58,237,0.15)" stroke="rgba(124,58,237,0.3)" />
+    <text x="140" y="119" text-anchor="middle" font-size="12" font-weight="700" fill="#A78BFA">1. Select Role &amp; PDF</text>
+    
+    <!-- Role Select Box Mockup -->
+    <rect x="70" y="150" width="140" height="35" rx="8" fill="#0F172A" stroke="rgba(255,255,255,0.1)" />
+    <text x="85" y="172" font-size="11" fill="#E5E7EB">DevOps Engineer</text>
+    <polygon points="190,165 195,172 185,172" fill="#94A3B8" transform="rotate(180 190 168)" />
+    
+    <!-- Dropzone Area Mockup -->
+    <rect x="70" y="200" width="140" height="90" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(124,58,237,0.2)" stroke-dasharray="4 3" />
+    <!-- PDF Icon -->
+    <rect x="125" y="215" width="30" height="38" rx="3" fill="#EF4444" opacity="0.8" />
+    <text x="140" y="238" text-anchor="middle" font-size="9" font-weight="800" fill="#FFFFFF">PDF</text>
+    <text x="140" y="270" text-anchor="middle" font-size="10" font-weight="600" fill="#E5E7EB">resume.pdf</text>
+  </g>
+
+  <!-- COLUMN 2: LOADING & PROCESSING -->
+  <g class="glow-hover" transform="translate(0, 0)">
+    <rect x="320" y="80" width="160" height="240" rx="16" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+    
+    <!-- Title -->
+    <rect x="335" y="100" width="130" height="30" rx="6" fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.3)" />
+    <text x="400" y="119" text-anchor="middle" font-size="12" font-weight="700" fill="#22D3EE">2. Active Loader</text>
+    
+    <!-- Spinner Ring -->
+    <circle cx="400" cy="175" r="28" fill="none" stroke="rgba(124,58,237,0.15)" stroke-width="4" />
+    <circle cx="400" cy="175" r="28" fill="none" stroke="#7C3AED" stroke-width="4" stroke-dasharray="50 120" stroke-linecap="round" class="pulse" />
+    
+    <!-- Brain Icon in Center -->
+    <g transform="translate(388, 163) scale(0.8)">
+      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.02-2.02 2.5 2.5 0 0 1-2.02-2.02 2.5 2.5 0 0 1 0-3.04 2.5 2.5 0 0 1 2.02-2.02 2.5 2.5 0 0 1 2.02-2.02A2.5 2.5 0 0 1 9.5 2z" fill="#7C3AED" opacity="0.8"/>
+      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.02-2.02 2.5 2.5 0 0 0 2.02-2.02 2.5 2.5 0 0 0 0-3.04 2.5 2.5 0 0 0-2.02-2.02 2.5 2.5 0 0 0-2.02-2.02A2.5 2.5 0 0 0 14.5 2z" fill="#22D3EE" opacity="0.8"/>
+    </g>
+
+    <!-- Progress Steps Glowing -->
+    <g transform="translate(330, 225)">
+      <!-- Uploading (Active) -->
+      <circle cx="15" cy="10" r="5" fill="#A78BFA" class="pulse" />
+      <text x="28" y="14" font-size="10" font-weight="700" fill="#A78BFA">Uploading</text>
+      
+      <!-- Parsing (Active) -->
+      <circle cx="15" cy="30" r="5" fill="#A78BFA" class="pulse" />
+      <text x="28" y="34" font-size="10" font-weight="700" fill="#A78BFA">Parsing</text>
+      
+      <!-- Analyzing (Active) -->
+      <circle cx="15" cy="50" r="5" fill="#A78BFA" class="pulse" />
+      <text x="28" y="54" font-size="10" font-weight="700" fill="#A78BFA">Analyzing</text>
+    </g>
+  </g>
+
+  <!-- COLUMN 3: RESULTS & STATS -->
+  <g class="glow-hover" transform="translate(0, 0)">
+    <rect x="570" y="80" width="180" height="240" rx="16" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+    
+    <!-- Title -->
+    <rect x="590" y="100" width="140" height="30" rx="6" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.3)" />
+    <text x="660" y="119" text-anchor="middle" font-size="12" font-weight="700" fill="#34D399">3. Live Dashboard</text>
+    
+    <!-- Radial Score chart -->
+    <circle cx="660" cy="180" r="32" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6" />
+    <circle cx="660" cy="180" r="32" fill="none" stroke="url(#cyanGradient)" stroke-width="6" stroke-dasharray="150 200" stroke-linecap="round" transform="rotate(-90 660 180)" />
+    <text x="660" y="185" text-anchor="middle" font-size="15" font-weight="800" fill="#FFFFFF">72%</text>
+    <text x="660" y="225" text-anchor="middle" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="0.5">MATCH SCORE</text>
+    
+    <!-- Skill Tags Mockup -->
+    <g transform="translate(585, 245)">
+      <!-- Matched Tags -->
+      <rect x="5" y="5" width="45" height="16" rx="8" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.3)" />
+      <text x="27" y="16" text-anchor="middle" font-size="8" font-weight="800" fill="#34D399">Python</text>
+      
+      <rect x="55" y="5" width="40" height="16" rx="8" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.3)" />
+      <text x="75" y="16" text-anchor="middle" font-size="8" font-weight="800" fill="#34D399">Git</text>
+
+      <rect x="100" y="5" width="45" height="16" rx="8" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.3)" />
+      <text x="122" y="16" text-anchor="middle" font-size="8" font-weight="800" fill="#34D399">Django</text>
+
+      <!-- Missing Tags -->
+      <rect x="5" y="27" width="50" height="16" rx="8" fill="rgba(244,63,94,0.15)" stroke="rgba(244,63,94,0.3)" />
+      <text x="30" y="38" text-anchor="middle" font-size="8" font-weight="800" fill="#FB7185">Docker</text>
+
+      <rect x="60" y="27" width="65" height="16" rx="8" fill="rgba(244,63,94,0.15)" stroke="rgba(244,63,94,0.3)" />
+      <text x="92" y="38" text-anchor="middle" font-size="8" font-weight="800" fill="#FB7185">Kubernetes</text>
+    </g>
+  </g>
+
+  <!-- Interactive Info Footer -->
+  <text x="400" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#94A3B8">💡 Pro Tip: Hover over the cards to inspect steps. Real-time updates via responsive state management.</text>
+</svg>

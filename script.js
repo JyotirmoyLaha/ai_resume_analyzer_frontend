@@ -123,7 +123,7 @@ dropZone.addEventListener('drop', (e) => {
 // Loading progress steps animation
 function animateLoadingSteps() {
     const steps = document.querySelectorAll('.progress-step');
-    let current = 0;
+    let current = 1;
     const interval = setInterval(() => {
         if (current < steps.length) {
             steps.forEach((s, i) => {
@@ -245,3 +245,32 @@ function animateCounter(id, target, suffix = '') {
 }
 
 fetchRoles();
+
+// Navigation Link Handling (especially after resume analysis)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        const targetEl = document.querySelector(targetId);
+        
+        if (targetEl) {
+            e.preventDefault();
+            
+            // If results or loader is shown and we navigate to Home or Analyze, restore the landing view
+            if (targetId === '#hero-section' || targetId === '#input-section') {
+                heroSection.classList.remove('hidden');
+                inputSection.classList.remove('hidden');
+                resultsDashboard.classList.add('hidden');
+                loader.classList.add('hidden');
+            }
+            
+            // Scroll to the target element smoothly
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+            
+            // Close mobile menu if open
+            closeMobileMenu();
+            
+            // Update URL hash
+            history.pushState(null, null, targetId);
+        }
+    });
+});

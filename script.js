@@ -133,7 +133,7 @@ function animateLoadingSteps() {
         } else {
             clearInterval(interval);
         }
-    }, 1500);
+    }, 800);
     return interval;
 }
 
@@ -157,6 +157,7 @@ analyzeBtn.addEventListener('click', async () => {
     formData.append("role", roleSelect.value);
     formData.append("include_resources", "true");
 
+    const startTime = Date.now();
     try {
         const res = await fetch(`${API_BASE_URL}/analyze`, {
             method: "POST",
@@ -164,6 +165,13 @@ analyzeBtn.addEventListener('click', async () => {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Analysis failed");
+
+        // Ensure the loading animation plays for at least 2.2 seconds so all steps (Uploading -> Parsing -> Analyzing) are visible and glow
+        const elapsedTime = Date.now() - startTime;
+        const minimumDelay = 2200;
+        if (elapsedTime < minimumDelay) {
+            await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsedTime));
+        }
 
         renderResults(data);
     } catch (err) {
